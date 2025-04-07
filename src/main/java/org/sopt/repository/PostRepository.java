@@ -53,4 +53,8 @@ public class PostRepository {
         }
         return result;
     }
+
+    public void loadAll(List<Post> posts) {
+        postList.addAll(posts);
+    }
 }

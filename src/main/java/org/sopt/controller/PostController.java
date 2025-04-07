@@ -31,4 +31,12 @@ public class PostController {
     public List<Post> searchPostsByKeyword(String keyword){
         return postService.getAllPostByKeyword(keyword);
     }
+
+    public void savePostsToFile() throws Exception {
+        postService.savePostsToFile();
+    }
+
+    public void loadPostsFromFile() throws Exception {
+        postService.loadPostsFromFile();
+    }
 }

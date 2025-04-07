@@ -1,15 +1,22 @@
 package org.sopt;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
 import org.sopt.controller.PostController;
 import org.sopt.domain.Post;
 
 public class Main {
+    private static final String SAVE_FILE_PATH = "saved_posts.txt";
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         PostController controller = new PostController();
-
+        try (FileWriter fw = new FileWriter(SAVE_FILE_PATH, false)) {
+            fw.write("");
+        } catch (IOException e) {
+            System.out.println("⚠️ 파일 초기화 중 오류 발생: " + e.getMessage());
+        }
         printWelcome();
 
         while (true) {
@@ -91,6 +98,24 @@ public class Main {
                     }
                     break;
 
+                case "7":
+                    System.out.println("\n [게시글 파일로 저장]");
+                    try {
+                        controller.savePostsToFile();
+                        System.out.println("게시글이 파일에 저장되었습니다.");
+                    } catch (Exception e) {
+                        System.out.println("저장 중 오류 발생: " + e.getMessage());
+                    }
+                    break;
+                case "8":
+                    System.out.println("\n  [게시글 불러오기]");
+                    try {
+                        controller.loadPostsFromFile();
+                        System.out.println("파일에서 게시글을 불러왔습니다.");
+                    } catch (Exception e) {
+                        System.out.println("불러오기 중 오류 발생: " + e.getMessage());
+                    }
+                    break;
                 case "0":
                     System.out.println("\n👋 프로그램을 종료합니다. 감사합니다!");
                     return;
@@ -115,6 +140,8 @@ public class Main {
         System.out.println("4️⃣  게시글 수정");
         System.out.println("5️⃣  게시글 삭제");
         System.out.println("6️⃣  게시글 검색");
+        System.out.println("7️⃣  게시글 저장");
+        System.out.println("8️⃣  게시글 불러오기");
         System.out.println("0️⃣  프로그램 종료");
         System.out.println("=====================================");
     }

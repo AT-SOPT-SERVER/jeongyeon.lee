@@ -4,16 +4,19 @@ import org.sopt.common.utils.IdGenrator;
 import org.sopt.domain.Post;
 import org.sopt.repository.PostRepository;
 
+import java.io.*;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 
 import static org.sopt.common.exception.ErrorMessage.*;
 
 public class PostService {
     private final PostRepository postRepository = new PostRepository();
+    private static final String SAVE_FILE_PATH = "saved_posts.txt";
+    private static final String LOAD_FILE_PATH = "load_posts.txt";
     private LocalDateTime updatedAt;
+
     public void createPost(String title) {
         validateTitle(title);
         validateUpdatedAt();
@@ -46,6 +49,7 @@ public class PostService {
 
     public Post getPostById(int id) {
         return postRepository.findById(id);
+
     }
 
     public boolean deletePostById(int id) {
@@ -64,5 +68,31 @@ public class PostService {
     public List<Post> getAllPostByKeyword(String keyword){
         return postRepository.findAllByKeyword(keyword);
     }
+
+    public void savePostsToFile() throws IOException {
+        List<Post> posts = postRepository.findAll();
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(SAVE_FILE_PATH))) {
+            for (Post post : posts) {
+                bw.write(post.getTitle());
+                bw.newLine();
+            }
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public void loadPostsFromFile() throws IOException {
+        try (BufferedReader br = new BufferedReader(new FileReader(LOAD_FILE_PATH))) {
+            String title;
+            while ((title = br.readLine()) != null) {
+                validateTitle(title);
+
+                Post post = new Post(IdGenrator.generateId(), title);
+                postRepository.save(post);
+            }
+        }
+    }
+
+
+
 
 }

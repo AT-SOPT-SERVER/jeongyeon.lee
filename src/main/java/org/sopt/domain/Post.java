@@ -1,7 +1,5 @@
 package org.sopt.domain;
 
-import java.time.LocalDateTime;
-
 public class Post {
     private final int id;
     private String title;
