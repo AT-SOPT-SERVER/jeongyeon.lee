@@ -4,17 +4,28 @@ import org.sopt.common.utils.IdGenrator;
 import org.sopt.domain.Post;
 import org.sopt.repository.PostRepository;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 import static org.sopt.common.exception.ErrorMessage.*;
 
 public class PostService {
     private final PostRepository postRepository = new PostRepository();
-
+    private LocalDateTime updatedAt;
     public void createPost(String title) {
         validateTitle(title);
+        validateUpdatedAt();
         Post post = new Post(IdGenrator.generateId(), title);
+        updatedAt = LocalDateTime.now();
         postRepository.save(post);
+    }
+
+    private void validateUpdatedAt() {
+        if(updatedAt != null && Duration.between(updatedAt, LocalDateTime.now()).toMinutes() < 3){
+            throw new IllegalStateException(TOO_MANY_REQUESTS.getMessage());
+        }
     }
 
     private void validateTitle(String title) {

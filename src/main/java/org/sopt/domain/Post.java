@@ -1,7 +1,9 @@
 package org.sopt.domain;
 
+import java.time.LocalDateTime;
+
 public class Post {
-    private int id;
+    private final int id;
     private String title;
 
     public Post(int id, String title) {
@@ -17,11 +19,8 @@ public class Post {
         return title;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public void setTitle(String title) {
         this.title = title;
     }
+
 }
