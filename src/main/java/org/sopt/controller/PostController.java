@@ -16,8 +16,8 @@ public class PostController {
         return postService.getAllPost();
     }
 
-    public Post getPostById(int id){
-        return postService.getPostById(id);
+    public void getPostById(int id){
+        postService.getPostById(id);
     }
 
     public boolean deletePostById(int id){

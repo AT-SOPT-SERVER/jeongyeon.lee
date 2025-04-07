@@ -47,9 +47,16 @@ public class PostService {
         return postRepository.findAll();
     }
 
-    public Post getPostById(int id) {
-        return postRepository.findById(id);
-
+    public void getPostById(int id) {
+        Post post = postRepository.findById(id);
+        if(post == null){
+            throw new IllegalArgumentException(POST_NOT_FOUND.getMessage());
+        }
+        System.out.println("📄 게시글 상세 내용:");
+        System.out.println("-------------------------------------");
+        System.out.printf("🆔 ID: %d\n", post.getId());
+        System.out.printf("📌 제목: %s\n", post.getTitle());
+        System.out.println("-------------------------------------");
     }
 
     public boolean deletePostById(int id) {
