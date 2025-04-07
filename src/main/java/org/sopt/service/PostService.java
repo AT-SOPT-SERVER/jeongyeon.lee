@@ -61,4 +61,8 @@ public class PostService {
         return true;
     }
 
+    public List<Post> getAllPostByKeyword(String keyword){
+        return postRepository.findAllByKeyword(keyword);
+    }
+
 }

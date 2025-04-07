@@ -27,4 +27,8 @@ public class PostController {
     public boolean updatePostTitle(int id, String title){
         return postService.updatePost(id, title);
     }
+
+    public List<Post> searchPostsByKeyword(String keyword){
+        return postService.getAllPostByKeyword(keyword);
+    }
 }
