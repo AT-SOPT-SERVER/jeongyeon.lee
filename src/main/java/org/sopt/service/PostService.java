@@ -19,7 +19,7 @@ public class PostService {
 
     public void createPost(String title) {
         validateTitle(title);
-       // validateUpdatedAt();
+        validateUpdatedAt();
         Post post = new Post(IdGenrator.generateId(), title);
         updatedAt = LocalDateTime.now();
         postRepository.save(post);
