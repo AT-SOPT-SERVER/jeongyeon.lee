@@ -24,4 +24,13 @@ public class PostService {
         return postRepository.deleteById(id);
     }
 
+    public boolean updatePost(int updateId, String newTitle){
+        Post findPost = postRepository.findById(updateId);
+        if(findPost.equals(null)){
+            return false;
+        }
+        findPost.setTitle(newTitle);
+        return true;
+    }
+
 }
