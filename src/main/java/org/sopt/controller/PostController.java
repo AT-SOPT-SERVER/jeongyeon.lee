@@ -7,12 +7,9 @@ import java.util.List;
 
 public class PostController {
     private PostService postService = new PostService();
-    private int postId;
-
 
     public void createPost(String title){
-        Post post = new Post(postId++, title);
-        postService.createPost(post);
+        postService.createPost(title);
     }
 
     public List<Post> getAllPosts(){
