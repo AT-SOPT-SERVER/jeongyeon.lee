@@ -19,7 +19,7 @@ public class PostService {
 
     public void createPost(String title) {
         validateTitle(title);
-        validateUpdatedAt();
+       // validateUpdatedAt();
         Post post = new Post(IdGenrator.generateId(), title);
         updatedAt = LocalDateTime.now();
         postRepository.save(post);
@@ -59,36 +59,50 @@ public class PostService {
         System.out.println("-------------------------------------");
     }
 
-    public boolean deletePostById(int id) {
-        return postRepository.deleteById(id);
+    public void deletePostById(int id) {
+        if(!postRepository.deleteById(id)){
+            throw new IllegalArgumentException(CANNOT_DELETE.getMessage());
+        }
+        System.out.println("🗑️ 게시글이 성공적으로 삭제되었습니다.");
     }
 
-    public boolean updatePost(int updateId, String newTitle){
+    public void updatePost(int updateId, String newTitle){
         Post findPost = postRepository.findById(updateId);
         if(findPost == null){
-            return false;
+            throw new IllegalArgumentException(POST_NOT_FOUND.getMessage());
         }
         validateTitle(newTitle);
         findPost.setTitle(newTitle);
-        return true;
+        System.out.println("✅ 게시글이 성공적으로 수정되었습니다.");
     }
 
-    public List<Post> getAllPostByKeyword(String keyword){
-        return postRepository.findAllByKeyword(keyword);
+    public void getAllPostByKeyword(String keyword){
+        List<Post> findPosts = postRepository.findAllByKeyword(keyword);
+        if (findPosts.isEmpty()) {
+            System.out.println("🔍 검색 결과가 없습니다.");
+        } else {
+            System.out.println("📋 검색 결과:");
+            for (Post post : findPosts) {
+                System.out.printf("🆔 %d | 📌 제목: %s\n", post.getId(), post.getTitle());
+            }
+        }
     }
 
-    public void savePostsToFile() throws IOException {
+    public void savePostsToFile(){
         List<Post> posts = postRepository.findAll();
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(SAVE_FILE_PATH))) {
             for (Post post : posts) {
                 bw.write(post.getTitle());
                 bw.newLine();
+                System.out.println("게시글이 파일에 저장되었습니다. 제목 : " + post.getTitle() + " ID : " + post.getId());
             }
+        } catch (IOException e) {
+            System.out.println("저장 중 오류 발생: " + e.getMessage());
         }
     }
 
     @SuppressWarnings("unchecked")
-    public void loadPostsFromFile() throws IOException {
+    public void loadPostsFromFile() {
         try (BufferedReader br = new BufferedReader(new FileReader(LOAD_FILE_PATH))) {
             String title;
             while ((title = br.readLine()) != null) {
@@ -96,7 +110,10 @@ public class PostService {
 
                 Post post = new Post(IdGenrator.generateId(), title);
                 postRepository.save(post);
+                System.out.println("파일에서 게시글을 불러왔습니다. 제목 : " + post.getTitle() + " ID : " + post.getId());
             }
+        } catch (IOException e) {
+            System.out.println("불러오기 중 오류 발생: " + e.getMessage());
         }
     }
 

@@ -20,23 +20,23 @@ public class PostController {
         postService.getPostById(id);
     }
 
-    public boolean deletePostById(int id){
-        return postService.deletePostById(id);
+    public void deletePostById(int id){
+        postService.deletePostById(id);
     }
 
-    public boolean updatePostTitle(int id, String title){
-        return postService.updatePost(id, title);
+    public void updatePostTitle(int id, String title){
+        postService.updatePost(id, title);
     }
 
-    public List<Post> searchPostsByKeyword(String keyword){
-        return postService.getAllPostByKeyword(keyword);
+    public void searchPostsByKeyword(String keyword){
+        postService.getAllPostByKeyword(keyword);
     }
 
-    public void savePostsToFile() throws Exception {
+    public void savePostsToFile(){
         postService.savePostsToFile();
     }
 
-    public void loadPostsFromFile() throws Exception {
+    public void loadPostsFromFile(){
         postService.loadPostsFromFile();
     }
 }

@@ -54,59 +54,33 @@ public class Main {
                     int updateId = Integer.parseInt(scanner.nextLine());
                     System.out.print("📝 새 제목을 입력해주세요: ");
                     String newTitle = scanner.nextLine();
-                    boolean updated = controller.updatePostTitle(updateId, newTitle);
-                    if (updated) {
-                        System.out.println("✅ 게시글이 성공적으로 수정되었습니다.");
-                    } else {
-                        System.out.println("❌ 해당 ID의 게시글이 존재하지 않습니다.");
-                    }
+                    controller.updatePostTitle(updateId, newTitle);
                     break;
 
                 case "5":
                     System.out.println("\n🗑️ [게시글 삭제]");
                     System.out.print("📌 삭제할 게시글 ID를 입력해주세요: ");
                     int deleteId = Integer.parseInt(scanner.nextLine());
-                    boolean deleted = controller.deletePostById(deleteId);
-                    if (deleted) {
-                        System.out.println("🗑️ 게시글이 성공적으로 삭제되었습니다.");
-                    } else {
-                        System.out.println("❌ 삭제할 게시글이 존재하지 않습니다.");
-                    }
+                    controller.deletePostById(deleteId);
                     break;
 
                 case "6":
                     System.out.println("\n🔎 [게시글 검색]");
                     System.out.print("검색할 키워드를 입력해주세요: ");
                     String keyword = scanner.nextLine();
-                    List<Post> results = controller.searchPostsByKeyword(keyword);
-                    if (results.isEmpty()) {
-                        System.out.println("🔍 검색 결과가 없습니다.");
-                    } else {
-                        System.out.println("📋 검색 결과:");
-                        for (Post post : results) {
-                            System.out.printf("🆔 %d | 📌 제목: %s\n", post.getId(), post.getTitle());
-                        }
-                    }
+                    controller.searchPostsByKeyword(keyword);
                     break;
 
                 case "7":
                     System.out.println("\n [게시글 파일로 저장]");
-                    try {
-                        controller.savePostsToFile();
-                        System.out.println("게시글이 파일에 저장되었습니다.");
-                    } catch (Exception e) {
-                        System.out.println("저장 중 오류 발생: " + e.getMessage());
-                    }
+                    controller.savePostsToFile();
                     break;
+
                 case "8":
                     System.out.println("\n  [게시글 불러오기]");
-                    try {
-                        controller.loadPostsFromFile();
-                        System.out.println("파일에서 게시글을 불러왔습니다.");
-                    } catch (Exception e) {
-                        System.out.println("불러오기 중 오류 발생: " + e.getMessage());
-                    }
+                    controller.loadPostsFromFile();
                     break;
+
                 case "0":
                     System.out.println("\n👋 프로그램을 종료합니다. 감사합니다!");
                     return;
