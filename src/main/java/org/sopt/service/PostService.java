@@ -1,6 +1,5 @@
 package org.sopt.service;
 
-import org.sopt.common.exception.ErrorMessage;
 import org.sopt.domain.Post;
 import org.sopt.repository.PostRepository;
 
@@ -9,7 +8,7 @@ import java.util.List;
 import static org.sopt.common.exception.ErrorMessage.*;
 
 public class PostService {
-    private PostRepository postRepository = new PostRepository();
+    private final PostRepository postRepository = new PostRepository();
     private int postId;
 
     public void createPost(String title) {
@@ -24,6 +23,9 @@ public class PostService {
         }
         if(title.length() > 30){
             throw new IllegalArgumentException(INVALID_TITLE_LENGTH.getMessage());
+        }
+        if(postRepository.isExistByTitle(title)){
+            throw new IllegalArgumentException(TITLE_ALREADY_EXISTS.getMessage());
         }
     }
 

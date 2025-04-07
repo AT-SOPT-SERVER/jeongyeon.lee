@@ -6,7 +6,7 @@ import org.sopt.service.PostService;
 import java.util.List;
 
 public class PostController {
-    private PostService postService = new PostService();
+    private final PostService postService = new PostService();
 
     public void createPost(String title){
         postService.createPost(title);

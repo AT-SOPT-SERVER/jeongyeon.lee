@@ -34,4 +34,13 @@ public class PostRepository {
         }
         return false;
     }
+
+    public boolean isExistByTitle(String title) {
+        for (Post post : postList) {
+            if (post.getTitle().equals(title)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
