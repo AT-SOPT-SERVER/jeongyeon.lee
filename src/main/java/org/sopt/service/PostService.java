@@ -68,6 +68,7 @@ public class PostService {
         if(findPost == null){
             return false;
         }
+        validateTitle(newTitle);
         findPost.setTitle(newTitle);
         return true;
     }
