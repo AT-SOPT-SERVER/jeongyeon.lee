@@ -1,5 +1,6 @@
 package org.sopt.service;
 
+import org.sopt.common.utils.IdGenrator;
 import org.sopt.domain.Post;
 import org.sopt.repository.PostRepository;
 
@@ -9,11 +10,10 @@ import static org.sopt.common.exception.ErrorMessage.*;
 
 public class PostService {
     private final PostRepository postRepository = new PostRepository();
-    private int postId;
 
     public void createPost(String title) {
         validateTitle(title);
-        Post post = new Post(postId++, title);
+        Post post = new Post(IdGenrator.generateId(), title);
         postRepository.save(post);
     }
 
@@ -43,7 +43,7 @@ public class PostService {
 
     public boolean updatePost(int updateId, String newTitle){
         Post findPost = postRepository.findById(updateId);
-        if(findPost.equals(null)){
+        if(findPost == null){
             return false;
         }
         findPost.setTitle(newTitle);
