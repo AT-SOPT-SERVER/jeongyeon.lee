@@ -35,7 +35,7 @@ public class PostService {
         if(title.isEmpty()){
             throw new IllegalArgumentException(EMPTY_TITLE.getMessage());
         }
-        if(title.length() > 30){
+        if(title.codePointCount(0, title.length()) > 30){
             throw new IllegalArgumentException(INVALID_TITLE_LENGTH.getMessage());
         }
         if(postRepository.isExistByTitle(title)){
