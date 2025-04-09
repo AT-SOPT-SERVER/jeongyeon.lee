@@ -5,9 +5,11 @@ import org.sopt.domain.Post;
 import org.sopt.repository.PostRepository;
 
 import java.io.*;
+import java.text.BreakIterator;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Locale;
 
 import static org.sopt.common.exception.ErrorMessage.*;
 
@@ -35,7 +37,7 @@ public class PostService {
         if(title.isEmpty()){
             throw new IllegalArgumentException(EMPTY_TITLE.getMessage());
         }
-        if(title.codePointCount(0, title.length()) > 30){
+        if(getGraphemeClusterCount(title) > 30){
             throw new IllegalArgumentException(INVALID_TITLE_LENGTH.getMessage());
         }
         if(postRepository.isExistByTitle(title)){
@@ -117,7 +119,20 @@ public class PostService {
         }
     }
 
-
-
-
+    private int getGraphemeClusterCount(String text) {
+        BreakIterator it = BreakIterator.getCharacterInstance();
+        it.setText(text);
+        int count = 0;
+        int start = it.first();
+        while (BreakIterator.DONE != start) {
+            int end = it.next();
+            if (end != BreakIterator.DONE) {
+                count++;
+                start = end;
+            } else {
+                break;
+            }
+        }
+        return count;
+    }
 }
