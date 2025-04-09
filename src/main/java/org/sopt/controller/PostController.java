@@ -16,15 +16,15 @@ public class PostController {
         return postService.getAllPost();
     }
 
-    public void getPostById(int id){
+    public void getPostById(Long id){
         postService.getPostById(id);
     }
 
-    public void deletePostById(int id){
+    public void deletePostById(Long id){
         postService.deletePostById(id);
     }
 
-    public void updatePostTitle(int id, String title){
+    public void updatePostTitle(Long id, String title){
         postService.updatePost(id, title);
     }
 

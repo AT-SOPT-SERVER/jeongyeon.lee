@@ -6,11 +6,9 @@ import org.sopt.domain.Post;
 import org.sopt.repository.PostRepository;
 
 import java.io.*;
-import java.text.BreakIterator;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Locale;
 
 import static org.sopt.common.exception.ErrorMessage.*;
 
@@ -22,7 +20,7 @@ public class PostService {
 
     public void createPost(String title) {
         validateTitle(title);
-        validateUpdatedAt();
+        //validateUpdatedAt();
         Post post = new Post(IdGenrator.generateId(), title);
         updatedAt = LocalDateTime.now();
         postRepository.save(post);
@@ -50,7 +48,7 @@ public class PostService {
         return postRepository.findAll();
     }
 
-    public void getPostById(int id) {
+    public void getPostById(Long id) {
         Post post = postRepository.findById(id);
         if(post == null){
             throw new IllegalArgumentException(POST_NOT_FOUND.getMessage());
@@ -62,14 +60,14 @@ public class PostService {
         System.out.println("-------------------------------------");
     }
 
-    public void deletePostById(int id) {
+    public void deletePostById(Long id) {
         if(!postRepository.deleteById(id)){
             throw new IllegalArgumentException(CANNOT_DELETE.getMessage());
         }
         System.out.println("🗑️ 게시글이 성공적으로 삭제되었습니다.");
     }
 
-    public void updatePost(int updateId, String newTitle){
+    public void updatePost(Long updateId, String newTitle){
         Post findPost = postRepository.findById(updateId);
         if(findPost == null){
             throw new IllegalArgumentException(POST_NOT_FOUND.getMessage());
