@@ -2,7 +2,6 @@ package org.sopt;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.List;
 import java.util.Scanner;
 import org.sopt.controller.PostController;
 import org.sopt.domain.Post;
@@ -45,7 +44,7 @@ public class Main {
                     System.out.println("\n🔍 [게시글 상세 조회]");
                     System.out.print("📌 조회할 게시글 ID를 입력해주세요: ");
                     Long id = Long.parseLong(scanner.nextLine());
-                    controller.getPostById(id);
+                    controller.getPostDetailById(id);
                     break;
 
                 case "4":

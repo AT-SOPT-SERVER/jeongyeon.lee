@@ -16,8 +16,8 @@ public class PostController {
         return postService.getAllPost();
     }
 
-    public void getPostById(Long id){
-        postService.getPostById(id);
+    public void getPostDetailById(Long id){
+        postService.getPostDetailById(id);
     }
 
     public void deletePostById(Long id){

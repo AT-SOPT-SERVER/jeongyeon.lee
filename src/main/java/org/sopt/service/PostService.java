@@ -1,13 +1,11 @@
 package org.sopt.service;
 
 import org.sopt.common.utils.IdGenrator;
-import org.sopt.common.utils.TextUtils;
 import org.sopt.common.utils.Validator;
 import org.sopt.domain.Post;
 import org.sopt.repository.PostRepository;
 
 import java.io.*;
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -31,21 +29,13 @@ public class PostService {
         return postRepository.findAll();
     }
 
-    public void getPostById(Long id) {
-        Post post = findPostById(id);
+    public void getPostDetailById(Long id) {
+        Post post = getFindPost(id);
         System.out.println("📄 게시글 상세 내용:");
         System.out.println("-------------------------------------");
         System.out.printf("🆔 ID: %d\n", post.getId());
         System.out.printf("📌 제목: %s\n", post.getTitle());
         System.out.println("-------------------------------------");
-    }
-
-    private Post findPostById(Long id) {
-        Post post = postRepository.findById(id);
-        if(post == null){
-            throw new IllegalArgumentException(POST_NOT_FOUND.getMessage());
-        }
-        return post;
     }
 
     public void deletePostById(Long id) {
