@@ -2,6 +2,7 @@ package org.sopt.service;
 
 import org.sopt.common.utils.IdGenrator;
 import org.sopt.common.utils.TextUtils;
+import org.sopt.common.utils.Validator;
 import org.sopt.domain.Post;
 import org.sopt.repository.PostRepository;
 
@@ -19,29 +20,11 @@ public class PostService {
     private LocalDateTime updatedAt;
 
     public void createPost(String title) {
-        validateTitle(title);
-        //validateUpdatedAt();
+        Validator.validateTitle(title);
+        Validator.validateUpdatedAt(updatedAt);
         Post post = new Post(IdGenrator.generateId(), title);
         updatedAt = LocalDateTime.now();
         postRepository.save(post);
-    }
-
-    private void validateUpdatedAt() {
-        if(updatedAt != null && Duration.between(updatedAt, LocalDateTime.now()).toMinutes() < 3){
-            throw new IllegalStateException(TOO_MANY_REQUESTS.getMessage());
-        }
-    }
-
-    private void validateTitle(String title) {
-        if(title.isEmpty()){
-            throw new IllegalArgumentException(EMPTY_TITLE.getMessage());
-        }
-        if(TextUtils.getLengthOfEmojiContainableText(title) > 30){
-            throw new IllegalArgumentException(INVALID_TITLE_LENGTH.getMessage());
-        }
-        if(postRepository.isExistByTitle(title)){
-            throw new IllegalArgumentException(TITLE_ALREADY_EXISTS.getMessage());
-        }
     }
 
     public List<Post> getAllPost(){
@@ -49,15 +32,20 @@ public class PostService {
     }
 
     public void getPostById(Long id) {
-        Post post = postRepository.findById(id);
-        if(post == null){
-            throw new IllegalArgumentException(POST_NOT_FOUND.getMessage());
-        }
+        Post post = findPostById(id);
         System.out.println("📄 게시글 상세 내용:");
         System.out.println("-------------------------------------");
         System.out.printf("🆔 ID: %d\n", post.getId());
         System.out.printf("📌 제목: %s\n", post.getTitle());
         System.out.println("-------------------------------------");
+    }
+
+    private Post findPostById(Long id) {
+        Post post = postRepository.findById(id);
+        if(post == null){
+            throw new IllegalArgumentException(POST_NOT_FOUND.getMessage());
+        }
+        return post;
     }
 
     public void deletePostById(Long id) {
@@ -68,13 +56,18 @@ public class PostService {
     }
 
     public void updatePost(Long updateId, String newTitle){
+        Post findPost = getFindPost(updateId);
+        Validator.validateTitle(newTitle);
+        findPost.setTitle(newTitle);
+        System.out.println("✅ 게시글이 성공적으로 수정되었습니다.");
+    }
+
+    private Post getFindPost(Long updateId) {
         Post findPost = postRepository.findById(updateId);
         if(findPost == null){
             throw new IllegalArgumentException(POST_NOT_FOUND.getMessage());
         }
-        validateTitle(newTitle);
-        findPost.setTitle(newTitle);
-        System.out.println("✅ 게시글이 성공적으로 수정되었습니다.");
+        return findPost;
     }
 
     public void getAllPostByKeyword(String keyword){
@@ -107,7 +100,7 @@ public class PostService {
         try (BufferedReader br = new BufferedReader(new FileReader(LOAD_FILE_PATH))) {
             String title;
             while ((title = br.readLine()) != null) {
-                validateTitle(title);
+                Validator.validateTitle(title);
 
                 Post post = new Post(IdGenrator.generateId(), title);
                 postRepository.save(post);
