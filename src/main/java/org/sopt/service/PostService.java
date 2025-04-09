@@ -72,33 +72,14 @@ public class PostService {
         }
     }
 
-    public void savePostsToFile(){
-        List<Post> posts = postRepository.findAll();
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(SAVE_FILE_PATH))) {
-            for (Post post : posts) {
-                bw.write(post.getTitle());
-                bw.newLine();
-                System.out.println("게시글이 파일에 저장되었습니다. 제목 : " + post.getTitle() + " ID : " + post.getId());
-            }
-        } catch (IOException e) {
-            System.out.println("저장 중 오류 발생: " + e.getMessage());
-        }
+    public void savePostsToFile() throws IOException {
+        postRepository.saveToFile(SAVE_FILE_PATH);
+        System.out.println("게시글이 파일에 저장되었습니다.");
     }
 
-    @SuppressWarnings("unchecked")
-    public void loadPostsFromFile() {
-        try (BufferedReader br = new BufferedReader(new FileReader(LOAD_FILE_PATH))) {
-            String title;
-            while ((title = br.readLine()) != null) {
-                Validator.validateTitle(title);
-
-                Post post = new Post(IdGenrator.generateId(), title);
-                postRepository.save(post);
-                System.out.println("파일에서 게시글을 불러왔습니다. 제목 : " + post.getTitle() + " ID : " + post.getId());
-            }
-        } catch (IOException e) {
-            System.out.println("불러오기 중 오류 발생: " + e.getMessage());
-        }
+    public void loadPostsFromFile() throws IOException {
+        postRepository.loadFromFile(LOAD_FILE_PATH);
+        System.out.println("파일에서 게시글을 불러왔습니다.");
     }
 
 }

@@ -3,6 +3,7 @@ package org.sopt.controller;
 import org.sopt.domain.Post;
 import org.sopt.service.PostService;
 
+import java.io.IOException;
 import java.util.List;
 
 public class PostController {
@@ -32,11 +33,11 @@ public class PostController {
         postService.getAllPostByKeyword(keyword);
     }
 
-    public void savePostsToFile(){
+    public void savePostsToFile() throws IOException {
         postService.savePostsToFile();
     }
 
-    public void loadPostsFromFile(){
+    public void loadPostsFromFile() throws IOException {
         postService.loadPostsFromFile();
     }
 }
