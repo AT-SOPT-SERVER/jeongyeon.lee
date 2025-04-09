@@ -1,6 +1,7 @@
 package org.sopt.service;
 
 import org.sopt.common.utils.IdGenrator;
+import org.sopt.common.utils.TextUtils;
 import org.sopt.domain.Post;
 import org.sopt.repository.PostRepository;
 
@@ -37,7 +38,7 @@ public class PostService {
         if(title.isEmpty()){
             throw new IllegalArgumentException(EMPTY_TITLE.getMessage());
         }
-        if(getGraphemeClusterCount(title) > 30){
+        if(TextUtils.getLengthOfEmojiContainableText(title) > 30){
             throw new IllegalArgumentException(INVALID_TITLE_LENGTH.getMessage());
         }
         if(postRepository.isExistByTitle(title)){
@@ -119,20 +120,4 @@ public class PostService {
         }
     }
 
-    private int getGraphemeClusterCount(String text) {
-        BreakIterator it = BreakIterator.getCharacterInstance();
-        it.setText(text);
-        int count = 0;
-        int start = it.first();
-        while (BreakIterator.DONE != start) {
-            int end = it.next();
-            if (end != BreakIterator.DONE) {
-                count++;
-                start = end;
-            } else {
-                break;
-            }
-        }
-        return count;
-    }
 }
