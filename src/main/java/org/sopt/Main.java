@@ -32,57 +32,36 @@ public class Main {
             try {
                 switch (input) {
                     case "1":
-                        System.out.println("\n📝 [게시글 작성]");
-                        System.out.print("📌 제목을 입력해주세요: ");
-                        String title = scanner.nextLine();
-                        controller.createPost(title);
-                        System.out.println("✅ 게시글이 성공적으로 저장되었습니다!");
+                        controller.createPost();
                         break;
 
                     case "2":
-                        System.out.println("\n📚 [전체 게시글 조회]");
                         for (Post post : controller.getAllPosts()) {
                             System.out.printf("🆔 %d | 📌 제목: %s\n", post.getId(), post.getTitle());
                         }
                         break;
 
                     case "3":
-                        System.out.println("\n🔍 [게시글 상세 조회]");
-                        System.out.print("📌 조회할 게시글 ID를 입력해주세요: ");
-                        Long id = Long.parseLong(scanner.nextLine());
-                        controller.getPostDetailById(id);
+                        controller.getPostDetailById();
                         break;
 
                     case "4":
-                        System.out.println("\n✏️ [게시글 수정]");
-                        System.out.print("📌 수정할 게시글 ID를 입력해주세요: ");
-                        Long updateId = Long.parseLong(scanner.nextLine());
-                        System.out.print("📝 새 제목을 입력해주세요: ");
-                        String newTitle = scanner.nextLine();
-                        controller.updatePostTitle(updateId, newTitle);
+                        controller.updatePostTitle();
                         break;
 
                     case "5":
-                        System.out.println("\n🗑️ [게시글 삭제]");
-                        System.out.print("📌 삭제할 게시글 ID를 입력해주세요: ");
-                        Long deleteId = Long.parseLong(scanner.nextLine());
-                        controller.deletePostById(deleteId);
+                        controller.deletePostById();
                         break;
 
                     case "6":
-                        System.out.println("\n🔎 [게시글 검색]");
-                        System.out.print("검색할 키워드를 입력해주세요: ");
-                        String keyword = scanner.nextLine();
-                        controller.searchPostsByKeyword(keyword);
+                        controller.searchPostsByKeyword();
                         break;
 
                     case "7":
-                        System.out.println("\n💾 [게시글 파일로 저장]");
                         controller.savePostsToFile();
                         break;
 
                     case "8":
-                        System.out.println("\n📂 [게시글 불러오기]");
                         controller.loadPostsFromFile();
                         break;
 
