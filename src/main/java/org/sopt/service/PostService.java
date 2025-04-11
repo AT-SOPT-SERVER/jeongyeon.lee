@@ -53,11 +53,7 @@ public class PostService {
     }
 
     private Post getFindPost(Long updateId) {
-        Post findPost = postRepository.findById(updateId);
-        if(findPost == null){
-            throw new IllegalArgumentException(POST_NOT_FOUND.getMessage());
-        }
-        return findPost;
+        return postRepository.findById(updateId).orElseThrow(() -> new IllegalArgumentException(POST_NOT_FOUND.getMessage()));
     }
 
     public void getAllPostByKeyword(String keyword){

@@ -5,10 +5,7 @@ import org.sopt.common.utils.Validator;
 import org.sopt.domain.Post;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class PostRepository {
     Map<Long, Post> postMap = new HashMap<>();
@@ -21,8 +18,8 @@ public class PostRepository {
         return new ArrayList<>(postMap.values());
     }
 
-    public Post findById(Long id) {
-        return postMap.get(id);
+    public Optional<Post> findById(Long id) {
+        return Optional.ofNullable(postMap.get(id));
     }
 
     public boolean deleteById(Long id) {
