@@ -1,6 +1,5 @@
 package org.sopt.common.utils;
 
-import org.sopt.common.utils.TextUtils;
 import org.sopt.repository.PostRepository;
 
 import java.time.Duration;
@@ -23,7 +22,7 @@ public class Validator {
         if(TextUtils.getLengthOfEmojiContainableText(title) > 30){
             throw new IllegalArgumentException(INVALID_TITLE_LENGTH.getMessage());
         }
-        if(postRepository.isExistByTitle(title)){
+        if(postRepository.existsByTitle(title)){
             throw new IllegalArgumentException(TITLE_ALREADY_EXISTS.getMessage());
         }
     }

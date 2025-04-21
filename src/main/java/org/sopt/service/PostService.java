@@ -2,10 +2,10 @@ package org.sopt.service;
 
 import org.sopt.common.utils.Validator;
 import org.sopt.domain.Post;
+import org.sopt.dto.response.PostResponse;
 import org.sopt.repository.PostRepository;
 import org.springframework.stereotype.Service;
 
-import java.io.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -27,8 +27,8 @@ public class PostService {
         updatedAt = LocalDateTime.now();
     }
 
-    public List<Post> getAllPost(){
-        return postRepository.findAll();
+    public List<PostResponse> getAllPost(){
+        return postRepository.findAll().stream().map(post -> new PostResponse(post.getId(), post.getTitle())).toList();
     }
 
     public void getPostDetailById(Long id) {

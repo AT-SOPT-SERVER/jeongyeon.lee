@@ -1,6 +1,7 @@
 package org.sopt.controller;
 
 import org.sopt.dto.request.PostRequest;
+import org.sopt.dto.response.PostResponse;
 import org.sopt.service.PostService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Scanner;
 
 @RestController
@@ -25,9 +27,11 @@ public class PostController {
     }
 
     @GetMapping("/posts")
-    public ResponseEntity<?> getAllPosts(){
+    public ResponseEntity<List<PostResponse>> getAllPosts(){
         return ResponseEntity.ok(postService.getAllPost());
     }
+
+
 
     public void getPostDetailById(){
         System.out.println("\n🔍 [게시글 상세 조회]");
