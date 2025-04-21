@@ -1,19 +1,14 @@
 package org.sopt.common.utils;
 
+import org.sopt.common.utils.TextUtils;
 import org.sopt.repository.PostRepository;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 
 import static org.sopt.common.exception.ErrorMessage.*;
-import static org.sopt.common.exception.ErrorMessage.TITLE_ALREADY_EXISTS;
 
 public class Validator {
-    private final PostRepository postRepository;
-
-    public Validator(PostRepository postRepository) {
-        this.postRepository = postRepository;
-    }
 
     public static void validateUpdatedAt(LocalDateTime updatedAt) {
         if(updatedAt != null && Duration.between(updatedAt, LocalDateTime.now()).toMinutes() < 3){
@@ -21,7 +16,7 @@ public class Validator {
         }
     }
 
-    public static void validateTitle(String title) {
+    public static void validateTitle(String title, PostRepository postRepository) {
         if(title.isEmpty()){
             throw new IllegalArgumentException(EMPTY_TITLE.getMessage());
         }

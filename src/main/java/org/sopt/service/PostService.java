@@ -1,6 +1,5 @@
 package org.sopt.service;
 
-import org.sopt.common.utils.IdGenrator;
 import org.sopt.common.utils.Validator;
 import org.sopt.domain.Post;
 import org.sopt.repository.PostRepository;
@@ -22,7 +21,10 @@ public class PostService {
     }
 
     public void createPost(String title) {
-
+        Validator.validateTitle(title, postRepository);
+        Validator.validateUpdatedAt(updatedAt);
+        postRepository.save(new Post(title));
+        updatedAt = LocalDateTime.now();
     }
 
     public List<Post> getAllPost(){
