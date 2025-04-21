@@ -29,7 +29,6 @@ public class PostController {
         return ResponseEntity.ok(postService.getAllPost());
     }
 
-
     @GetMapping("/{postId}")
     public ResponseEntity<PostResponse> getPostDetailById(@PathVariable final Long postId){
         return ResponseEntity.ok(postService.getPostDetailById(postId));
@@ -40,13 +39,9 @@ public class PostController {
        return ResponseEntity.ok(postService.deletePostById(postId));
     }
 
-    public void updatePostTitle(){
-        System.out.println("\n✏️ [게시글 수정]");
-        System.out.print("📌 수정할 게시글 ID를 입력해주세요: ");
-        Long updateId = Long.parseLong(scanner.nextLine());
-        System.out.print("📝 새 제목을 입력해주세요: ");
-        String newTitle = scanner.nextLine();
-        postService.updatePost(updateId, newTitle);
+    @PutMapping()
+    public ResponseEntity<Void> updatePostTitle(@RequestBody final PostRequest req){
+        return ResponseEntity.ok(postService.updatePost(req.updateId(), req.title()));
     }
 
     public void searchPostsByKeyword(){

@@ -42,8 +42,11 @@ public class PostService {
         return null;
     }
 
-    public void updatePost(Long updateId, String newTitle){
-
+    public Void updatePost(Long updateId, String newTitle){
+        Post findPost = getFindPost(updateId);
+        findPost.setTitle(newTitle);
+        postRepository.save(findPost);
+        return null;
     }
 
     private Post getFindPost(Long updateId) {
@@ -51,7 +54,7 @@ public class PostService {
     }
 
     public void getAllPostByKeyword(String keyword){
-
+            
     }
 
 }
