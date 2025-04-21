@@ -1,6 +1,6 @@
 package org.sopt.controller;
 
-import org.sopt.dto.PostRequest;
+import org.sopt.dto.request.PostRequest;
 import org.sopt.service.PostService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.IOException;
 import java.util.Scanner;
 
 @RestController
@@ -22,7 +21,7 @@ public class PostController {
 
     @PostMapping("/posts")
     public void createPost(@RequestBody final PostRequest req){
-        postService.createPost(req.getTitle());
+        postService.createPost(req.title());
     }
 
     @GetMapping("/posts")
