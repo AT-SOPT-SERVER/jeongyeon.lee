@@ -36,8 +36,10 @@ public class PostService {
         return new PostResponse(findPost.getId(), findPost.getTitle());
     }
 
-    public void deletePostById(Long id) {
-
+    public Void deletePostById(Long id) {
+        Post findPost = getFindPost(id);
+        postRepository.delete(findPost);
+        return null;
     }
 
     public void updatePost(Long updateId, String newTitle){

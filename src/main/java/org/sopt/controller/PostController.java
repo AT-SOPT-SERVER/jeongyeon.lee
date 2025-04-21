@@ -35,11 +35,9 @@ public class PostController {
         return ResponseEntity.ok(postService.getPostDetailById(postId));
     }
 
-    public void deletePostById(){
-        System.out.println("\n🗑️ [게시글 삭제]");
-        System.out.print("📌 삭제할 게시글 ID를 입력해주세요: ");
-        Long deleteId = Long.parseLong(scanner.nextLine());
-        postService.deletePostById(deleteId);
+    @DeleteMapping("/{postId}")
+    public ResponseEntity<Void> deletePostById(@PathVariable final Long postId){
+       return ResponseEntity.ok(postService.deletePostById(postId));
     }
 
     public void updatePostTitle(){
