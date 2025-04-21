@@ -31,8 +31,9 @@ public class PostService {
         return postRepository.findAll().stream().map(post -> new PostResponse(post.getId(), post.getTitle())).toList();
     }
 
-    public void getPostDetailById(Long id) {
-
+    public PostResponse getPostDetailById(Long id) {
+        Post findPost = getFindPost(id);
+        return new PostResponse(findPost.getId(), findPost.getTitle());
     }
 
     public void deletePostById(Long id) {
