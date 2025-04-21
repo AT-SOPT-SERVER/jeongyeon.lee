@@ -1,6 +1,7 @@
 package org.sopt.controller;
 
 import org.sopt.dto.request.PostRequest;
+import org.sopt.dto.request.PostUpdateRequest;
 import org.sopt.dto.response.PostResponse;
 import org.sopt.service.PostService;
 import org.springframework.http.ResponseEntity;
@@ -40,15 +41,13 @@ public class PostController {
     }
 
     @PutMapping()
-    public ResponseEntity<Void> updatePostTitle(@RequestBody final PostRequest req){
-        return ResponseEntity.ok(postService.updatePost(req.updateId(), req.title()));
+    public ResponseEntity<Void> updatePostTitle(@RequestBody final PostUpdateRequest req){
+        return ResponseEntity.ok(postService.updatePost(req.updateId(), req.newTitle()));
     }
 
-    public void searchPostsByKeyword(){
-        System.out.println("\n🔎 [게시글 검색]");
-        System.out.print("검색할 키워드를 입력해주세요: ");
-        String keyword = scanner.nextLine();
-        postService.getAllPostByKeyword(keyword);
+    @GetMapping("/search")
+    public ResponseEntity<List<PostResponse>> searchPostsByKeyword(@RequestParam final String keyword){
+        return ResponseEntity.ok(postService.getAllPostByKeyword(keyword));
     }
 
 }

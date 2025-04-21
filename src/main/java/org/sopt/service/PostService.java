@@ -22,7 +22,7 @@ public class PostService {
 
     public void createPost(String title) {
         Validator.validateTitle(title, postRepository);
-        Validator.validateUpdatedAt(updatedAt);
+//        Validator.validateUpdatedAt(updatedAt);
         postRepository.save(new Post(title));
         updatedAt = LocalDateTime.now();
     }
@@ -53,8 +53,8 @@ public class PostService {
         return postRepository.findById(updateId).orElseThrow(() -> new IllegalArgumentException(POST_NOT_FOUND.getMessage()));
     }
 
-    public void getAllPostByKeyword(String keyword){
-            
+    public List<PostResponse> getAllPostByKeyword(String keyword){
+        return postRepository.findAllByKeyword(keyword).stream().map(post -> new PostResponse(post.getId(), post.getTitle())).toList();
     }
 
 }
