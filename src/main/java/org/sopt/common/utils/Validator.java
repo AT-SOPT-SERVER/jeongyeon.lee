@@ -9,7 +9,11 @@ import static org.sopt.common.exception.ErrorMessage.*;
 import static org.sopt.common.exception.ErrorMessage.TITLE_ALREADY_EXISTS;
 
 public class Validator {
-    private static final PostRepository postRepository = new PostRepository();
+    private final PostRepository postRepository;
+
+    public Validator(PostRepository postRepository) {
+        this.postRepository = postRepository;
+    }
 
     public static void validateUpdatedAt(LocalDateTime updatedAt) {
         if(updatedAt != null && Duration.between(updatedAt, LocalDateTime.now()).toMinutes() < 3){

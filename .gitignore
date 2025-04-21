@@ -35,12 +35,9 @@ bin/
 /nbdist/
 /.nb-gradle/
 
+
 ### VS Code ###
 .vscode/
 
 ### Mac OS ###
 .DS_Store
-
-
-load_posts.txt
-saved_posts.txt

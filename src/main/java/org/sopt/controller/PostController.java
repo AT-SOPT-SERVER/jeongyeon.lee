@@ -1,26 +1,33 @@
 package org.sopt.controller;
 
-import org.sopt.domain.Post;
+import org.sopt.dto.PostRequest;
 import org.sopt.service.PostService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Scanner;
 
+@RestController
 public class PostController {
-    private final PostService postService = new PostService();
+    private final PostService postService;
     private final Scanner scanner = new Scanner(System.in);
-    public void createPost(){
-        System.out.println("\n📝 [게시글 작성]");
-        System.out.print("📌 제목을 입력해주세요: ");
-        String title = scanner.nextLine();
-        postService.createPost(title);
-        System.out.println("✅ 게시글이 성공적으로 저장되었습니다!");
+
+    public PostController(PostService postService) {
+        this.postService = postService;
     }
 
-    public List<Post> getAllPosts(){
-        System.out.println("\n📚 [전체 게시글 조회]");
-        return postService.getAllPost();
+    @PostMapping("/posts")
+    public void createPost(@RequestBody final PostRequest req){
+        postService.createPost(req.getTitle());
+    }
+
+    @GetMapping("/posts")
+    public ResponseEntity<?> getAllPosts(){
+        return ResponseEntity.ok(postService.getAllPost());
     }
 
     public void getPostDetailById(){
@@ -53,13 +60,4 @@ public class PostController {
         postService.getAllPostByKeyword(keyword);
     }
 
-    public void savePostsToFile() throws IOException {
-        System.out.println("\n💾 [게시글 파일로 저장]");
-        postService.savePostsToFile();
-    }
-
-    public void loadPostsFromFile() throws IOException {
-        System.out.println("\n📂 [게시글 불러오기]");
-        postService.loadPostsFromFile();
-    }
 }
