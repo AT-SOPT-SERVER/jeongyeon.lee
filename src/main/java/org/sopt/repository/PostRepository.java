@@ -10,7 +10,7 @@ import java.util.List;
 
 
 @Repository
-public interface PostRepository extends JpaRepository<Post,Long> {
+public interface PostRepository extends JpaRepository<Post, Long> {
     boolean existsByTitle(String title);
 
     @Query("select p from Post p where p.title like concat('%', :keyword, '%')")

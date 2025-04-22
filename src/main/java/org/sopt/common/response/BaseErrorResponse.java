@@ -3,6 +3,7 @@ package org.sopt.common.response;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import org.sopt.common.exception.ErrorCode;
+
 import java.time.LocalDateTime;
 
 @JsonPropertyOrder({"success", "code", "message", "timestamp"})

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.sopt.common.exception.ErrorCode.*;
+import static org.sopt.common.exception.ErrorCode.POST_NOT_FOUND;
 
 @Service
 public class PostService {
@@ -23,12 +23,12 @@ public class PostService {
 
     public void createPost(String title) {
         Validator.validateTitle(title, postRepository);
-//        Validator.validateUpdatedAt(updatedAt);
+        Validator.validateUpdatedAt(updatedAt);
         postRepository.save(new Post(title));
         updatedAt = LocalDateTime.now();
     }
 
-    public List<PostResponse> getAllPost(){
+    public List<PostResponse> getAllPost() {
         return postRepository.findAll().stream().map(post -> new PostResponse(post.getId(), post.getTitle())).toList();
     }
 
@@ -43,7 +43,7 @@ public class PostService {
         return null;
     }
 
-    public Void updatePost(Long updateId, String newTitle){
+    public Void updatePost(Long updateId, String newTitle) {
         Validator.validateTitle(newTitle, postRepository);
         Post findPost = getFindPost(updateId);
         findPost.setTitle(newTitle);
@@ -55,7 +55,7 @@ public class PostService {
         return postRepository.findById(updateId).orElseThrow(() -> new CustomException(POST_NOT_FOUND));
     }
 
-    public List<PostResponse> getAllPostByKeyword(String keyword){
+    public List<PostResponse> getAllPostByKeyword(String keyword) {
         return postRepository.findAllByKeyword(keyword).stream().map(post -> new PostResponse(post.getId(), post.getTitle())).toList();
     }
 

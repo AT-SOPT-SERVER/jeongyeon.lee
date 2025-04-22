@@ -2,7 +2,7 @@ package org.sopt.common.exception;
 
 import org.springframework.http.HttpStatus;
 
-import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 public enum ErrorCode {
     //Post

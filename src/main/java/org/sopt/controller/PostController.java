@@ -5,7 +5,6 @@ import org.sopt.dto.request.PostRequest;
 import org.sopt.dto.request.PostUpdateRequest;
 import org.sopt.dto.response.PostResponse;
 import org.sopt.service.PostService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,33 +19,33 @@ public class PostController {
     }
 
     @PostMapping()
-    public BaseResponse<Void> createPost(@RequestBody final PostRequest req){
+    public BaseResponse<Void> createPost(@RequestBody final PostRequest req) {
         postService.createPost(req.title());
         return BaseResponse.ok(null);
     }
 
     @GetMapping()
-    public BaseResponse<List<PostResponse>> getAllPosts(){
+    public BaseResponse<List<PostResponse>> getAllPosts() {
         return BaseResponse.ok(postService.getAllPost());
     }
 
     @GetMapping("/{postId}")
-    public BaseResponse<PostResponse> getPostDetailById(@PathVariable final Long postId){
+    public BaseResponse<PostResponse> getPostDetailById(@PathVariable final Long postId) {
         return BaseResponse.ok(postService.getPostDetailById(postId));
     }
 
     @DeleteMapping("/{postId}")
-    public BaseResponse<Void> deletePostById(@PathVariable final Long postId){
-       return BaseResponse.ok(postService.deletePostById(postId));
+    public BaseResponse<Void> deletePostById(@PathVariable final Long postId) {
+        return BaseResponse.ok(postService.deletePostById(postId));
     }
 
     @PutMapping()
-    public BaseResponse<Void> updatePostTitle(@RequestBody final PostUpdateRequest req){
+    public BaseResponse<Void> updatePostTitle(@RequestBody final PostUpdateRequest req) {
         return BaseResponse.ok(postService.updatePost(req.updateId(), req.newTitle()));
     }
 
     @GetMapping("/search")
-    public BaseResponse<List<PostResponse>> searchPostsByKeyword(@RequestParam final String keyword){
+    public BaseResponse<List<PostResponse>> searchPostsByKeyword(@RequestParam final String keyword) {
         return BaseResponse.ok(postService.getAllPostByKeyword(keyword));
     }
 
