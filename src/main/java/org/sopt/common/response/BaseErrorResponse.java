@@ -6,7 +6,7 @@ import org.sopt.common.exception.ErrorCode;
 import java.time.LocalDateTime;
 
 @JsonPropertyOrder({"success", "code", "message", "timestamp"})
-public class BaseErrorResponse<T> {
+public class BaseErrorResponse {
     private final boolean success;
     private final int code;
     private final String message;
@@ -19,9 +19,9 @@ public class BaseErrorResponse<T> {
         this.timestamp = timestamp;
     }
 
-    public BaseErrorResponse(int code, String message) {
-        this.code = code;
-        this.message = message;
+    public BaseErrorResponse(ErrorCode errorCode) {
+        this.code = errorCode.getCode();
+        this.message = errorCode.getMessage();
         this.success = false;
         this.timestamp = LocalDateTime.now();
     }

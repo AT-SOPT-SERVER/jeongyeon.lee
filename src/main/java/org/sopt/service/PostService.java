@@ -1,5 +1,6 @@
 package org.sopt.service;
 
+import org.sopt.common.exception.CustomException;
 import org.sopt.common.utils.Validator;
 import org.sopt.domain.Post;
 import org.sopt.dto.response.PostResponse;
@@ -43,6 +44,7 @@ public class PostService {
     }
 
     public Void updatePost(Long updateId, String newTitle){
+        Validator.validateTitle(newTitle, postRepository);
         Post findPost = getFindPost(updateId);
         findPost.setTitle(newTitle);
         postRepository.save(findPost);
@@ -50,7 +52,7 @@ public class PostService {
     }
 
     private Post getFindPost(Long updateId) {
-        return postRepository.findById(updateId).orElseThrow(() -> new IllegalArgumentException(POST_NOT_FOUND.getMessage()));
+        return postRepository.findById(updateId).orElseThrow(() -> new CustomException(POST_NOT_FOUND));
     }
 
     public List<PostResponse> getAllPostByKeyword(String keyword){

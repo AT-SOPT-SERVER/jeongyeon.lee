@@ -5,14 +5,6 @@ import org.springframework.http.HttpStatus;
 import static org.springframework.http.HttpStatus.*;
 
 public enum ErrorCode {
-    //Common
-    ILLEGAL_ARGUMENT(100, BAD_REQUEST.value(), "잘못된 요청값입니다."),
-    NOT_FOUND(101, HttpStatus.NOT_FOUND.value(), "존재하지 않는 API 입니다."),
-    METHOD_NOT_ALLOWED(102, HttpStatus.METHOD_NOT_ALLOWED.value(), "유효하지 않은 Http 메서드입니다."),
-    SERVER_ERROR(103, INTERNAL_SERVER_ERROR.value(), "서버에 오류가 발생했습니다."),
-    UNAUTHORIZED(104,HttpStatus.UNAUTHORIZED.value(),"인증 자격이 없습니다."),
-    FORBIDDEN(105,HttpStatus.FORBIDDEN.value(), "권한이 없습니다."),
-
     //Post
     EMPTY_TITLE(200, BAD_REQUEST.value(), "제목이 비어있습니다."),
     INVALID_TITLE_LENGTH(201, BAD_REQUEST.value(), "제목은 30자를 넘을 수 없습니다."),
