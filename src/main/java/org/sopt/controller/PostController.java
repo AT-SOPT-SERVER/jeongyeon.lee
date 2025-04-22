@@ -1,5 +1,6 @@
 package org.sopt.controller;
 
+import org.sopt.common.response.BaseResponse;
 import org.sopt.dto.request.PostRequest;
 import org.sopt.dto.request.PostUpdateRequest;
 import org.sopt.dto.response.PostResponse;
@@ -8,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Scanner;
 
 @RestController
 @RequestMapping("/posts")
@@ -20,34 +20,34 @@ public class PostController {
     }
 
     @PostMapping()
-    public ResponseEntity<Void> createPost(@RequestBody final PostRequest req){
+    public BaseResponse<Void> createPost(@RequestBody final PostRequest req){
         postService.createPost(req.title());
-        return ResponseEntity.noContent().build();
+        return BaseResponse.ok(null);
     }
 
     @GetMapping()
-    public ResponseEntity<List<PostResponse>> getAllPosts(){
-        return ResponseEntity.ok(postService.getAllPost());
+    public BaseResponse<List<PostResponse>> getAllPosts(){
+        return BaseResponse.ok(postService.getAllPost());
     }
 
     @GetMapping("/{postId}")
-    public ResponseEntity<PostResponse> getPostDetailById(@PathVariable final Long postId){
-        return ResponseEntity.ok(postService.getPostDetailById(postId));
+    public BaseResponse<PostResponse> getPostDetailById(@PathVariable final Long postId){
+        return BaseResponse.ok(postService.getPostDetailById(postId));
     }
 
     @DeleteMapping("/{postId}")
-    public ResponseEntity<Void> deletePostById(@PathVariable final Long postId){
-       return ResponseEntity.ok(postService.deletePostById(postId));
+    public BaseResponse<Void> deletePostById(@PathVariable final Long postId){
+       return BaseResponse.ok(postService.deletePostById(postId));
     }
 
     @PutMapping()
-    public ResponseEntity<Void> updatePostTitle(@RequestBody final PostUpdateRequest req){
-        return ResponseEntity.ok(postService.updatePost(req.updateId(), req.newTitle()));
+    public BaseResponse<Void> updatePostTitle(@RequestBody final PostUpdateRequest req){
+        return BaseResponse.ok(postService.updatePost(req.updateId(), req.newTitle()));
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<PostResponse>> searchPostsByKeyword(@RequestParam final String keyword){
-        return ResponseEntity.ok(postService.getAllPostByKeyword(keyword));
+    public BaseResponse<List<PostResponse>> searchPostsByKeyword(@RequestParam final String keyword){
+        return BaseResponse.ok(postService.getAllPostByKeyword(keyword));
     }
 
 }
