@@ -20,11 +20,12 @@ public class PostService {
         this.postRepository = postRepository;
     }
 
-    public void createPost(String title) {
+    public Void createPost(String title) {
         Validator.validateTitle(title, postRepository);
 //        Validator.validateUpdatedAt(updatedAt);
         postRepository.save(new Post(title));
         updatedAt = LocalDateTime.now();
+        return null;
     }
 
     public List<PostResponse> getAllPost(){

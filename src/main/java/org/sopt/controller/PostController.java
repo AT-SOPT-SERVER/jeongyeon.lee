@@ -14,15 +14,15 @@ import java.util.Scanner;
 @RequestMapping("/posts")
 public class PostController {
     private final PostService postService;
-    private final Scanner scanner = new Scanner(System.in);
 
     public PostController(PostService postService) {
         this.postService = postService;
     }
 
     @PostMapping()
-    public void createPost(@RequestBody final PostRequest req){
+    public ResponseEntity<Void> createPost(@RequestBody final PostRequest req){
         postService.createPost(req.title());
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping()
