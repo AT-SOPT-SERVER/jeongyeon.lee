@@ -5,7 +5,7 @@ import org.sopt.repository.PostRepository;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
-import static org.sopt.common.exception.ErrorMessage.*;
+import static org.sopt.common.exception.ErrorCode.*;
 
 public class Validator {
 

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.sopt.common.exception.ErrorMessage.*;
+import static org.sopt.common.exception.ErrorCode.*;
 
 @Service
 public class PostService {
