@@ -1,65 +1,52 @@
 package org.sopt.controller;
 
-import org.sopt.domain.Post;
+import org.sopt.common.response.BaseResponse;
+import org.sopt.dto.request.PostRequest;
+import org.sopt.dto.request.PostUpdateRequest;
+import org.sopt.dto.response.PostResponse;
 import org.sopt.service.PostService;
+import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.util.List;
-import java.util.Scanner;
 
+@RestController
+@RequestMapping("/posts")
 public class PostController {
-    private final PostService postService = new PostService();
-    private final Scanner scanner = new Scanner(System.in);
-    public void createPost(){
-        System.out.println("\n📝 [게시글 작성]");
-        System.out.print("📌 제목을 입력해주세요: ");
-        String title = scanner.nextLine();
-        postService.createPost(title);
-        System.out.println("✅ 게시글이 성공적으로 저장되었습니다!");
+    private final PostService postService;
+
+    public PostController(PostService postService) {
+        this.postService = postService;
     }
 
-    public List<Post> getAllPosts(){
-        System.out.println("\n📚 [전체 게시글 조회]");
-        return postService.getAllPost();
+    @PostMapping()
+    public BaseResponse<Void> createPost(@RequestBody final PostRequest req) {
+        postService.createPost(req.title());
+        return BaseResponse.ok(null);
     }
 
-    public void getPostDetailById(){
-        System.out.println("\n🔍 [게시글 상세 조회]");
-        System.out.print("📌 조회할 게시글 ID를 입력해주세요: ");
-        Long id = Long.parseLong(scanner.nextLine());
-        postService.getPostDetailById(id);
+    @GetMapping()
+    public BaseResponse<List<PostResponse>> getAllPosts() {
+        return BaseResponse.ok(postService.getAllPost());
     }
 
-    public void deletePostById(){
-        System.out.println("\n🗑️ [게시글 삭제]");
-        System.out.print("📌 삭제할 게시글 ID를 입력해주세요: ");
-        Long deleteId = Long.parseLong(scanner.nextLine());
-        postService.deletePostById(deleteId);
+    @GetMapping("/{postId}")
+    public BaseResponse<PostResponse> getPostDetailById(@PathVariable final Long postId) {
+        return BaseResponse.ok(postService.getPostDetailById(postId));
     }
 
-    public void updatePostTitle(){
-        System.out.println("\n✏️ [게시글 수정]");
-        System.out.print("📌 수정할 게시글 ID를 입력해주세요: ");
-        Long updateId = Long.parseLong(scanner.nextLine());
-        System.out.print("📝 새 제목을 입력해주세요: ");
-        String newTitle = scanner.nextLine();
-        postService.updatePost(updateId, newTitle);
+    @DeleteMapping("/{postId}")
+    public BaseResponse<Void> deletePostById(@PathVariable final Long postId) {
+        return BaseResponse.ok(postService.deletePostById(postId));
     }
 
-    public void searchPostsByKeyword(){
-        System.out.println("\n🔎 [게시글 검색]");
-        System.out.print("검색할 키워드를 입력해주세요: ");
-        String keyword = scanner.nextLine();
-        postService.getAllPostByKeyword(keyword);
+    @PutMapping()
+    public BaseResponse<Void> updatePostTitle(@RequestBody final PostUpdateRequest req) {
+        return BaseResponse.ok(postService.updatePost(req.updateId(), req.newTitle()));
     }
 
-    public void savePostsToFile() throws IOException {
-        System.out.println("\n💾 [게시글 파일로 저장]");
-        postService.savePostsToFile();
+    @GetMapping("/search")
+    public BaseResponse<List<PostResponse>> searchPostsByKeyword(@RequestParam final String keyword) {
+        return BaseResponse.ok(postService.getAllPostByKeyword(keyword));
     }
 
-    public void loadPostsFromFile() throws IOException {
-        System.out.println("\n📂 [게시글 불러오기]");
-        postService.loadPostsFromFile();
-    }
 }
