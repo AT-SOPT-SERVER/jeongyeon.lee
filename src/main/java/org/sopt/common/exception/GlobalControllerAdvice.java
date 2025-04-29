@@ -4,9 +4,14 @@ import org.sopt.common.response.BaseErrorResponse;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.NoHandlerFoundException;
+
+import static org.sopt.common.exception.ErrorCode.*;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @RestControllerAdvice
 public class GlobalControllerAdvice {
@@ -25,11 +30,21 @@ public class GlobalControllerAdvice {
 
         BaseErrorResponse response = new BaseErrorResponse(
                 false,
-                400,
+                BAD_REQUEST.value(),
                 message,
                 java.time.LocalDateTime.now()
         );
 
-        return new ResponseEntity<>(response, HttpStatusCode.valueOf(400));
+        return new ResponseEntity<>(response, HttpStatusCode.valueOf(BAD_REQUEST.value()));
+    }
+
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public BaseErrorResponse handle_HttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
+        return new BaseErrorResponse(METHOD_NOT_ALLOWED);
+    }
+
+    @ExceptionHandler(NoHandlerFoundException.class)
+    public BaseErrorResponse handle_NoHandlerFoundException(NoHandlerFoundException e){
+        return new BaseErrorResponse(API_NOT_FOUND);
     }
 }
