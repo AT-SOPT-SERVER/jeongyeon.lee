@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.sopt.common.exception.ErrorCode.POST_NOT_FOUND;
+import static org.sopt.common.exception.ErrorCode.TITLE_ALREADY_EXISTS;
 
 @Service
 public class PostService {
@@ -22,7 +23,9 @@ public class PostService {
     }
 
     public void createPost(String title, String content) {
-        Validator.validateTitleAndContent(title, content, postRepository);
+        if(postRepository.existsByTitle(title)) {
+            throw new CustomException(TITLE_ALREADY_EXISTS);
+        }
         Validator.validateUpdatedAt(updatedAt);
         postRepository.save(new Post(title, content));
         updatedAt = LocalDateTime.now();
@@ -44,9 +47,11 @@ public class PostService {
     }
 
     public Void updatePost(Long updateId, String newTitle, String newContent) {
-        Validator.validateTitleAndContent(newTitle, newContent, postRepository);
+        if(postRepository.existsByTitle(newTitle)) {
+            throw new CustomException(TITLE_ALREADY_EXISTS);
+        }
         Post findPost = getFindPost(updateId);
-        findPost.setTitle(newTitle);
+        findPost.updateTitleAndContent(newTitle, newContent);
         postRepository.save(findPost);
         return null;
     }

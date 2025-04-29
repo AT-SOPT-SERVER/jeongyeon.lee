@@ -31,7 +31,8 @@ public class Post {
         return this.title;
     }
 
-    public void setTitle(String title) {
+    public void updateTitleAndContent(String title, String content) {
         this.title = title;
+        this.content = content;
     }
 }

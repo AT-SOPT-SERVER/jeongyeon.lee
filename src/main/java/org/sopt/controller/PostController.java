@@ -1,5 +1,6 @@
 package org.sopt.controller;
 
+import jakarta.validation.Valid;
 import org.sopt.common.response.BaseResponse;
 import org.sopt.dto.request.PostRequest;
 import org.sopt.dto.request.PostUpdateRequest;
@@ -19,7 +20,7 @@ public class PostController {
     }
 
     @PostMapping()
-    public BaseResponse<Void> createPost(@RequestBody final PostRequest req) {
+    public BaseResponse<Void> createPost(@RequestBody  @Valid final PostRequest req) {
         postService.createPost(req.title(), req.content());
         return BaseResponse.ok(null);
     }
@@ -40,7 +41,7 @@ public class PostController {
     }
 
     @PutMapping()
-    public BaseResponse<Void> updatePostTitle(@RequestBody final PostUpdateRequest req) {
+    public BaseResponse<Void> updatePostTitle(@RequestBody @Valid final PostUpdateRequest req) {
         return BaseResponse.ok(postService.updatePost(req.updateId(), req.newTitle(), req.newContent()));
     }
 

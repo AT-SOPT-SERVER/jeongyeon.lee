@@ -11,7 +11,10 @@ public enum ErrorCode {
     TITLE_ALREADY_EXISTS(202, BAD_REQUEST.value(), "같은 제목의 게시글이 존재합니다."),
     TOO_MANY_REQUESTS(203, BAD_REQUEST.value(), "새로운 게시글 작성은 마지막 게시글 작성 이후 3분 뒤에 할 수 있습니다."),
     POST_NOT_FOUND(204, HttpStatus.NOT_FOUND.value(), "해당 ID의 게시글이 존재하지 않습니다."),
-    EMPTY_CONTENT(205,  BAD_REQUEST.value(), "내용이 비어있습니다.")
+    EMPTY_CONTENT(205,  BAD_REQUEST.value(), "내용이 비어있습니다."),
+
+    //User
+    EMAIL_ALREADY_EXISTS(300, BAD_REQUEST.value(), "이미 존재하는 이메일입니다.")
     ;
 
     private final int code;
