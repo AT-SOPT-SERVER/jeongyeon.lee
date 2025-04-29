@@ -10,14 +10,17 @@ public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String title;
 
+    private String content;
     public Post() {
 
     }
 
-    public Post(String title) {
+    public Post(String title, String content) {
         this.title = title;
+        this.content = content;
     }
 
     public Long getId() {

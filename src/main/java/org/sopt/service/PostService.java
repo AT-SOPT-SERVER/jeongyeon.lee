@@ -24,7 +24,7 @@ public class PostService {
     public void createPost(String title) {
         Validator.validateTitle(title, postRepository);
         Validator.validateUpdatedAt(updatedAt);
-        postRepository.save(new Post(title));
+        //postRepository.save(new Post(title));
         updatedAt = LocalDateTime.now();
     }
 
