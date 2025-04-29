@@ -3,31 +3,36 @@ package org.sopt.service;
 import org.sopt.common.exception.CustomException;
 import org.sopt.common.utils.Validator;
 import org.sopt.domain.Post;
+import org.sopt.domain.User;
 import org.sopt.dto.response.PostResponse;
 import org.sopt.repository.PostRepository;
+import org.sopt.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.sopt.common.exception.ErrorCode.POST_NOT_FOUND;
-import static org.sopt.common.exception.ErrorCode.TITLE_ALREADY_EXISTS;
+import static org.sopt.common.exception.ErrorCode.*;
 
 @Service
 public class PostService {
     private final PostRepository postRepository;
+    private final UserRepository userRepository;
     private LocalDateTime updatedAt;
 
-    public PostService(PostRepository postRepository) {
+    public PostService(PostRepository postRepository, UserRepository userRepository) {
         this.postRepository = postRepository;
+        this.userRepository = userRepository;
     }
 
-    public void createPost(String title, String content) {
+    public void createPost(String title, String content, Long userId) {
         if(postRepository.existsByTitle(title)) {
             throw new CustomException(TITLE_ALREADY_EXISTS);
         }
         Validator.validateUpdatedAt(updatedAt);
-        postRepository.save(new Post(title, content));
+
+        User user = getFindUser(userId);
+        postRepository.save(new Post(title, content, user));
         updatedAt = LocalDateTime.now();
     }
 
@@ -58,6 +63,10 @@ public class PostService {
 
     private Post getFindPost(Long updateId) {
         return postRepository.findById(updateId).orElseThrow(() -> new CustomException(POST_NOT_FOUND));
+    }
+
+    private User getFindUser(Long userId){
+        return userRepository.findById(userId).orElseThrow(() -> new CustomException((USER_NOT_FOUND)));
     }
 
     public List<PostResponse> getAllPostByKeyword(String keyword) {

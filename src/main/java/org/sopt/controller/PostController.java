@@ -22,7 +22,7 @@ public class PostController {
     @PostMapping()
     public BaseResponse<Void> createPost(@RequestBody  @Valid final PostRequest req,
                                          @RequestHeader final Long userId) {
-        postService.createPost(req.title(), req.content());
+        postService.createPost(req.title(), req.content(), userId);
         return BaseResponse.ok(null);
     }
 

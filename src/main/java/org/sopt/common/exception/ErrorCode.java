@@ -3,6 +3,7 @@ package org.sopt.common.exception;
 import org.springframework.http.HttpStatus;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 public enum ErrorCode {
     //common
@@ -16,7 +17,8 @@ public enum ErrorCode {
     POST_NOT_FOUND(204, HttpStatus.NOT_FOUND.value(), "해당 ID의 게시글이 존재하지 않습니다."),
 
     //User
-    EMAIL_ALREADY_EXISTS(300, BAD_REQUEST.value(), "이미 존재하는 이메일입니다.")
+    EMAIL_ALREADY_EXISTS(300, BAD_REQUEST.value(), "이미 존재하는 이메일입니다."),
+    USER_NOT_FOUND(301, NOT_FOUND.value(), "존재하지 않는 사용자입니다.")
     ;
 
     private final int code;
