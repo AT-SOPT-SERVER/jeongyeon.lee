@@ -20,7 +20,7 @@ public class PostController {
 
     @PostMapping()
     public BaseResponse<Void> createPost(@RequestBody final PostRequest req) {
-        postService.createPost(req.title());
+        postService.createPost(req.title(), req.content());
         return BaseResponse.ok(null);
     }
 
@@ -41,7 +41,7 @@ public class PostController {
 
     @PutMapping()
     public BaseResponse<Void> updatePostTitle(@RequestBody final PostUpdateRequest req) {
-        return BaseResponse.ok(postService.updatePost(req.updateId(), req.newTitle()));
+        return BaseResponse.ok(postService.updatePost(req.updateId(), req.newTitle(), req.newContent()));
     }
 
     @GetMapping("/search")

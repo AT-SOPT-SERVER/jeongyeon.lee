@@ -21,10 +21,10 @@ public class PostService {
         this.postRepository = postRepository;
     }
 
-    public void createPost(String title) {
-        Validator.validateTitle(title, postRepository);
+    public void createPost(String title, String content) {
+        Validator.validateTitleAndContent(title, content, postRepository);
         Validator.validateUpdatedAt(updatedAt);
-        //postRepository.save(new Post(title));
+        postRepository.save(new Post(title, content));
         updatedAt = LocalDateTime.now();
     }
 
@@ -43,8 +43,8 @@ public class PostService {
         return null;
     }
 
-    public Void updatePost(Long updateId, String newTitle) {
-        Validator.validateTitle(newTitle, postRepository);
+    public Void updatePost(Long updateId, String newTitle, String newContent) {
+        Validator.validateTitleAndContent(newTitle, newContent, postRepository);
         Post findPost = getFindPost(updateId);
         findPost.setTitle(newTitle);
         postRepository.save(findPost);

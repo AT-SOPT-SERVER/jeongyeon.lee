@@ -16,9 +16,13 @@ public class Validator {
         }
     }
 
-    public static void validateTitle(String title, PostRepository postRepository) {
+    public static void validateTitleAndContent(String title, String content, PostRepository postRepository) {
         if (title.isEmpty()) {
             throw new CustomException(EMPTY_TITLE);
+        }
+
+        if(content.isEmpty()) {
+            throw new CustomException(EMPTY_CONTENT);
         }
         if (TextUtils.getLengthOfEmojiContainableText(title) > 30) {
             throw new CustomException(INVALID_TITLE_LENGTH);
