@@ -26,13 +26,13 @@ public class PostService {
         this.userRepository = userRepository;
     }
 
-    public Void createPost(String title, String content, Long userId) {
+    public Void createPost(String title, String content, String tag, Long userId) {
         if(postRepository.existsByTitle(title)) {
             throw new CustomException(TITLE_ALREADY_EXISTS);
         }
 //        validateCreatedAt();
         User user = getFindUser(userId);
-        postRepository.save(new Post(title, content, user));
+        postRepository.save(new Post(title, content, tag, user));
         return null;
     }
 

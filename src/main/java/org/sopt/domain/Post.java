@@ -18,6 +18,8 @@ public class Post {
 
     private String content;
 
+    private String tag;
+
     @CreatedDate
     private LocalDateTime createdAt;
 
@@ -31,10 +33,11 @@ public class Post {
 
     }
 
-    public Post(String title, String content, User user) {
+    public Post(String title, String content, String tag, User user) {
         this.title = title;
         this.content = content;
         this.user = user;
+        this.tag = tag;
     }
 
     public Long getId() {

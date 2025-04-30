@@ -23,7 +23,7 @@ public class PostController {
     @PostMapping()
     public BaseResponse<Void> createPost(@RequestBody  @Valid final PostRequest req,
                                          @RequestHeader final Long userId) {
-        return BaseResponse.ok(postService.createPost(req.title(), req.content(), userId));
+        return BaseResponse.ok(postService.createPost(req.title(), req.content(), req.tag(), userId));
     }
 
     @GetMapping()
