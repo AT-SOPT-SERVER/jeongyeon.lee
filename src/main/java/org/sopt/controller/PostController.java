@@ -30,10 +30,10 @@ public class PostController {
         return BaseResponse.ok(postService.getAllPost());
     }
 
-    @GetMapping("/{postId}")
-    public BaseResponse<PostResponse> getPostDetailById(@PathVariable final Long postId) {
-        return BaseResponse.ok(postService.getPostDetailById(postId));
-    }
+//    @GetMapping("/{postId}")
+//    public BaseResponse<PostResponse> getPostDetailById(@PathVariable final Long postId) {
+//        return BaseResponse.ok(postService.getPostDetailById(postId));
+//    }
 
     @DeleteMapping("/{postId}")
     public BaseResponse<Void> deletePostById(@PathVariable final Long postId) {
@@ -45,9 +45,9 @@ public class PostController {
         return BaseResponse.ok(postService.updatePost(req.updateId(), req.newTitle(), req.newContent()));
     }
 
-    @GetMapping("/search")
-    public BaseResponse<List<PostResponse>> searchPostsByKeyword(@RequestParam final String keyword) {
-        return BaseResponse.ok(postService.getAllPostByKeyword(keyword));
-    }
+//    @GetMapping("/search")
+//    public BaseResponse<List<PostResponse>> searchPostsByKeyword(@RequestParam final String keyword) {
+//        return BaseResponse.ok(postService.getAllPostByKeyword(keyword));
+//    }
 
 }

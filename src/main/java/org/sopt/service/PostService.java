@@ -28,7 +28,7 @@ public class PostService {
         if(postRepository.existsByTitle(title)) {
             throw new CustomException(TITLE_ALREADY_EXISTS);
         }
-        validateCreatedAt();
+//        validateCreatedAt();
         User user = getFindUser(userId);
         postRepository.save(new Post(title, content, user));
         return null;
@@ -45,13 +45,13 @@ public class PostService {
     }
 
     public List<PostResponse> getAllPost() {
-        return postRepository.findAll().stream().map(post -> new PostResponse(post.getId(), post.getTitle())).toList();
+        return postRepository.findAllByOrderByCreatedAt().stream().map(post -> new PostResponse(post.getTitle(), post.getUser().getName())).toList();
     }
 
-    public PostResponse getPostDetailById(Long id) {
-        Post findPost = getFindPost(id);
-        return new PostResponse(findPost.getId(), findPost.getTitle());
-    }
+//    public PostResponse getPostDetailById(Long id) {
+//        Post findPost = getFindPost(id);
+//        return new PostResponse(findPost.getId(), findPost.getTitle());
+//    }
 
     public Void deletePostById(Long id) {
         Post findPost = getFindPost(id);
@@ -77,8 +77,8 @@ public class PostService {
         return userRepository.findById(userId).orElseThrow(() -> new CustomException((USER_NOT_FOUND)));
     }
 
-    public List<PostResponse> getAllPostByKeyword(String keyword) {
-        return postRepository.findAllByKeyword(keyword).stream().map(post -> new PostResponse(post.getId(), post.getTitle())).toList();
-    }
+//    public List<PostResponse> getAllPostByKeyword(String keyword) {
+//        return postRepository.findAllByKeyword(keyword).stream().map(post -> new PostResponse(post.getId(), post.getTitle())).toList();
+//    }
 
 }

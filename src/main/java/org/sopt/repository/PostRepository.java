@@ -17,6 +17,9 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     @Query("select p from Post p where p.title like concat('%', :keyword, '%')")
     List<Post> findAllByKeyword(@Param("keyword") String keyword);
 
-    @Query("select p.createdAt from Post p order by p.createdAt limit 1")
+    @Query("select p.createdAt from Post p order by p.createdAt desc limit 1")
     LocalDateTime findLatestCreatedAt();
+
+    @Query("select p from Post p order by p.createdAt desc")
+    List<Post> findAllByOrderByCreatedAt();
 }
