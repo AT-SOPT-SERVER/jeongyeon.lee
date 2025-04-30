@@ -49,6 +49,10 @@ public class Post {
         return user;
     }
 
+    public String getContent() {
+        return content;
+    }
+
     public Post(String content) {
         this.content = content;
     }

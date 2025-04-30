@@ -3,6 +3,7 @@ package org.sopt.service;
 import org.sopt.common.exception.CustomException;
 import org.sopt.domain.Post;
 import org.sopt.domain.User;
+import org.sopt.dto.response.PostDetailResponse;
 import org.sopt.dto.response.PostResponse;
 import org.sopt.repository.PostRepository;
 import org.sopt.repository.UserRepository;
@@ -48,10 +49,10 @@ public class PostService {
         return postRepository.findAllByOrderByCreatedAt().stream().map(post -> new PostResponse(post.getTitle(), post.getUser().getName())).toList();
     }
 
-//    public PostResponse getPostDetailById(Long id) {
-//        Post findPost = getFindPost(id);
-//        return new PostResponse(findPost.getId(), findPost.getTitle());
-//    }
+    public PostDetailResponse getPostDetailById(Long id) {
+        Post findPost = getFindPost(id);
+        return new PostDetailResponse(findPost.getTitle(), findPost.getContent(), findPost.getUser().getName());
+    }
 
     public Void deletePostById(Long id) {
         Post findPost = getFindPost(id);

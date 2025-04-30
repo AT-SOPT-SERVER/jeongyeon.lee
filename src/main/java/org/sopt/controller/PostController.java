@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import org.sopt.common.response.BaseResponse;
 import org.sopt.dto.request.PostRequest;
 import org.sopt.dto.request.PostUpdateRequest;
+import org.sopt.dto.response.PostDetailResponse;
 import org.sopt.dto.response.PostResponse;
 import org.sopt.service.PostService;
 import org.springframework.web.bind.annotation.*;
@@ -30,10 +31,10 @@ public class PostController {
         return BaseResponse.ok(postService.getAllPost());
     }
 
-//    @GetMapping("/{postId}")
-//    public BaseResponse<PostResponse> getPostDetailById(@PathVariable final Long postId) {
-//        return BaseResponse.ok(postService.getPostDetailById(postId));
-//    }
+    @GetMapping("/{postId}")
+    public BaseResponse<PostDetailResponse> getPostDetailById(@PathVariable final Long postId) {
+        return BaseResponse.ok(postService.getPostDetailById(postId));
+    }
 
     @DeleteMapping("/{postId}")
     public BaseResponse<Void> deletePostById(@PathVariable final Long postId) {
