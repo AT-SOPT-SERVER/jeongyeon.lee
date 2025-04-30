@@ -47,4 +47,10 @@ public class GlobalControllerAdvice {
     public BaseErrorResponse handle_NoHandlerFoundException(NoHandlerFoundException e){
         return new BaseErrorResponse(API_NOT_FOUND);
     }
+
+    @ExceptionHandler(Exception.class)
+    public BaseErrorResponse handle_InternalError(InternalError e) {
+        return new BaseErrorResponse(INTERNAL_SERVER_ERROR);
+    }
+
 }
