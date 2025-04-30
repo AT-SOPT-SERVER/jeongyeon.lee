@@ -42,13 +42,14 @@ public class PostController {
     }
 
     @PutMapping()
-    public BaseResponse<Void> updatePostTitle(@RequestBody @Valid final PostUpdateRequest req) {
-        return BaseResponse.ok(postService.updatePost(req.updateId(), req.newTitle(), req.newContent()));
+    public BaseResponse<Void> updatePostTitle(@RequestBody @Valid final PostUpdateRequest req,
+                                              @RequestHeader final Long userId) {
+        return BaseResponse.ok(postService.updatePost(userId, req.updateId(), req.newTitle(), req.newContent()));
     }
 
-//    @GetMapping("/search")
-//    public BaseResponse<List<PostResponse>> searchPostsByKeyword(@RequestParam final String keyword) {
-//        return BaseResponse.ok(postService.getAllPostByKeyword(keyword));
-//    }
+    @GetMapping("/search-title")
+    public BaseResponse<List<PostDetailResponse>> searchPostsByTitle(@RequestParam final String keyword) {
+        return BaseResponse.ok(postService.getAllPostByTitle(keyword));
+    }
 
 }

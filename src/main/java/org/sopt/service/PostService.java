@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 import static org.sopt.common.exception.ErrorCode.*;
 
@@ -60,14 +61,21 @@ public class PostService {
         return null;
     }
 
-    public Void updatePost(Long updateId, String newTitle, String newContent) {
-        if(postRepository.existsByTitle(newTitle)) {
-            throw new CustomException(TITLE_ALREADY_EXISTS);
-        }
+    public Void updatePost(Long userId, Long updateId, String newTitle, String newContent) {
         Post findPost = getFindPost(updateId);
+        validateUpdatePost(userId, newTitle, findPost);
         findPost.updateTitleAndContent(newTitle, newContent);
         postRepository.save(findPost);
         return null;
+    }
+
+    private void validateUpdatePost(Long userId, String newTitle, Post findPost) {
+        if(postRepository.existsByTitle(newTitle)) {
+            throw new CustomException(TITLE_ALREADY_EXISTS);
+        }
+        if(!Objects.equals(findPost.getUser().getId(), userId)) {
+            throw new CustomException(CANNOT_UPDATE_POST);
+        }
     }
 
     private Post getFindPost(Long updateId) {
@@ -78,8 +86,11 @@ public class PostService {
         return userRepository.findById(userId).orElseThrow(() -> new CustomException((USER_NOT_FOUND)));
     }
 
-//    public List<PostResponse> getAllPostByKeyword(String keyword) {
-//        return postRepository.findAllByKeyword(keyword).stream().map(post -> new PostResponse(post.getId(), post.getTitle())).toList();
-//    }
+    public List<PostDetailResponse> getAllPostByTitle(String keyword) {
+        return postRepository.findAllByKeyword(keyword).stream().map(post -> new PostDetailResponse(post.getTitle(),
+                post.getContent(),
+                post.getUser().getName())).
+                toList();
+    }
 
 }
