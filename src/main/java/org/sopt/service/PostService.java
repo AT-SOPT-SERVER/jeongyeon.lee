@@ -8,6 +8,7 @@ import org.sopt.dto.response.PostResponse;
 import org.sopt.repository.PostRepository;
 import org.sopt.repository.UserRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -16,6 +17,7 @@ import java.util.Objects;
 
 import static org.sopt.common.exception.ErrorCode.*;
 
+@Transactional(readOnly = true)
 @Service
 public class PostService {
     private final PostRepository postRepository;
@@ -26,11 +28,12 @@ public class PostService {
         this.userRepository = userRepository;
     }
 
+    @Transactional
     public Void createPost(String title, String content, String tag, Long userId) {
         if(postRepository.existsByTitle(title)) {
             throw new CustomException(TITLE_ALREADY_EXISTS);
         }
-//        validateCreatedAt();
+        validateCreatedAt();
         User user = getFindUser(userId);
         postRepository.save(new Post(title, content, tag, user));
         return null;
@@ -59,6 +62,7 @@ public class PostService {
                 findPost.getUser().getName());
     }
 
+    @Transactional
     public Void deletePostById(Long id, Long userId) {
         Post findPost = getFindPost(id);
         if(!Objects.equals(findPost.getUser().getId(), userId)) {
@@ -68,6 +72,7 @@ public class PostService {
         return null;
     }
 
+    @Transactional
     public Void updatePost(Long userId, Long updateId, String newTitle, String newContent) {
         Post findPost = getFindPost(updateId);
         validateUpdatePost(userId, newTitle, findPost);
