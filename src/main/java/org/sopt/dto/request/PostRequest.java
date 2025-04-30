@@ -3,18 +3,10 @@ package org.sopt.dto.request;
 import jakarta.validation.constraints.NotBlank;
 import org.hibernate.validator.constraints.Length;
 import org.sopt.common.annotation.ValidTag;
-import org.sopt.common.exception.CustomException;
-import org.sopt.common.utils.TextUtils;
-
-import static org.sopt.common.exception.ErrorCode.INVALID_TITLE_LENGTH;
+import org.sopt.common.annotation.ValidTitle;
 
 public record PostRequest(
-        @NotBlank(message = "제목은 비어있을 수 없습니다.")  @Length(max = 30, message = "제목은 30자를 넘을 수 없습니다.") String title,
+        @NotBlank(message = "제목은 비어있을 수 없습니다.")  @ValidTitle String title,
         @NotBlank(message = "내용은 비어있을 수 없습니다.") @Length(max = 1000, message = "내용은 1000자를 넘을 수 없습니다.")  String content,
-        @ValidTag String tag) {
-    public PostRequest {
-        if (TextUtils.getLengthOfEmojiContainableText(title) > 30) {
-            throw new CustomException(INVALID_TITLE_LENGTH);
-        }
-    }
+        @NotBlank(message = "태그는 비어있을 수 없습니다.") @ValidTag String tag) {
 }

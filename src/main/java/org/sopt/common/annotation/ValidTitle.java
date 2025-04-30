@@ -2,17 +2,16 @@ package org.sopt.common.annotation;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
-import org.sopt.common.utils.TagValidator;
+import org.sopt.common.utils.TitleValidator;
 
 import java.lang.annotation.*;
 
-
 @Documented
-@Constraint(validatedBy = TagValidator.class)
+@Constraint(validatedBy = TitleValidator.class)
 @Target({ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ValidTag {
-    String message() default "허용되지 않은 태그입니다. (백엔드, 데이터베이스, 인프라 중 하나여야 함)";
+public @interface ValidTitle {
+    String message() default "제목은 최대 30자까지 입력할 수 있습니다 (이모지 포함)";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }
