@@ -1,7 +1,6 @@
 package org.sopt.repository;
 
 import org.sopt.domain.Post;
-import org.sopt.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -27,5 +26,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     @Query("select p from Post p where p.user.name like concat('%', :userName, '%')")
     List<Post> findAllByUserName(@Param("userName") String userName);
 
-    String user(User user);
+    @Query("select p from Post p where p.tag = :tag")
+    List<Post> findAllByTag(@Param("tag") String tag);
 }

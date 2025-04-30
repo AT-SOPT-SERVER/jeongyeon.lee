@@ -57,4 +57,9 @@ public class PostController {
         return BaseResponse.ok(postService.getAllPostByUserName(userName));
     }
 
+    @GetMapping("/search-tag")
+    public BaseResponse<List<PostDetailResponse>> searchPostsByTag(@RequestParam final String tag) {
+        return BaseResponse.ok(postService.getAllPostByTag(tag));
+    }
+
 }

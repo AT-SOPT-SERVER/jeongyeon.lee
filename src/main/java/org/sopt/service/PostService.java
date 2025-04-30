@@ -107,4 +107,11 @@ public class PostService {
                 toList();
     }
 
+    public List<PostDetailResponse> getAllPostByTag(String tag){
+        return postRepository.findAllByTag(tag).stream().map(post -> new PostDetailResponse(post.getTitle(),
+                        post.getContent(),
+                        post.getUser().getName())).
+                toList();
+    }
+
 }
