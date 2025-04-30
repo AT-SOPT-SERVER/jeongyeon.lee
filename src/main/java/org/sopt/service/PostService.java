@@ -87,9 +87,16 @@ public class PostService {
     }
 
     public List<PostDetailResponse> getAllPostByTitle(String keyword) {
-        return postRepository.findAllByKeyword(keyword).stream().map(post -> new PostDetailResponse(post.getTitle(),
+        return postRepository.findAllByTitle(keyword).stream().map(post -> new PostDetailResponse(post.getTitle(),
                 post.getContent(),
                 post.getUser().getName())).
+                toList();
+    }
+
+    public List<PostDetailResponse> getAllPostByUserName(String userName){
+        return postRepository.findAllByUserName(userName).stream().map(post -> new PostDetailResponse(post.getTitle(),
+                        post.getContent(),
+                        post.getUser().getName())).
                 toList();
     }
 

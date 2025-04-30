@@ -52,4 +52,9 @@ public class PostController {
         return BaseResponse.ok(postService.getAllPostByTitle(keyword));
     }
 
+    @GetMapping("/search-author")
+    public BaseResponse<List<PostDetailResponse>> searchPostsByAuthor(@RequestParam final String userName) {
+        return BaseResponse.ok(postService.getAllPostByUserName(userName));
+    }
+
 }
