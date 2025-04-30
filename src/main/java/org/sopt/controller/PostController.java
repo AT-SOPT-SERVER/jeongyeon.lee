@@ -37,8 +37,8 @@ public class PostController {
     }
 
     @DeleteMapping("/{postId}")
-    public BaseResponse<Void> deletePostById(@PathVariable final Long postId) {
-        return BaseResponse.ok(postService.deletePostById(postId));
+    public BaseResponse<Void> deletePostById(@PathVariable final Long postId, @RequestHeader final Long userId) {
+        return BaseResponse.ok(postService.deletePostById(postId, userId));
     }
 
     @PutMapping()

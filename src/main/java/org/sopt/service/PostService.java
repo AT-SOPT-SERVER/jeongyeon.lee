@@ -47,16 +47,23 @@ public class PostService {
     }
 
     public List<PostResponse> getAllPost() {
-        return postRepository.findAllByOrderByCreatedAt().stream().map(post -> new PostResponse(post.getTitle(), post.getUser().getName())).toList();
+        return postRepository.findAllByOrderByCreatedAt().stream().map(post -> new PostResponse(
+                post.getTitle(),
+                post.getUser().getName())).toList();
     }
 
     public PostDetailResponse getPostDetailById(Long id) {
         Post findPost = getFindPost(id);
-        return new PostDetailResponse(findPost.getTitle(), findPost.getContent(), findPost.getUser().getName());
+        return new PostDetailResponse(findPost.getTitle(),
+                findPost.getContent(),
+                findPost.getUser().getName());
     }
 
-    public Void deletePostById(Long id) {
+    public Void deletePostById(Long id, Long userId) {
         Post findPost = getFindPost(id);
+        if(!Objects.equals(findPost.getUser().getId(), userId)) {
+            throw new CustomException(CANNOT_DELETE_POST);
+        }
         postRepository.delete(findPost);
         return null;
     }

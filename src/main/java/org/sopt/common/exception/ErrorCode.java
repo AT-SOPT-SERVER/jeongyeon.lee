@@ -16,6 +16,7 @@ public enum ErrorCode {
     TOO_MANY_REQUESTS(203, BAD_REQUEST.value(), "새로운 게시글 작성은 마지막 게시글 작성 이후 3분 뒤에 할 수 있습니다."),
     POST_NOT_FOUND(204, HttpStatus.NOT_FOUND.value(), "해당 ID의 게시글이 존재하지 않습니다."),
     CANNOT_UPDATE_POST(205, BAD_REQUEST.value(), "게시물 작성자 본인만 게시물을 수정할 수 있습니다."),
+    CANNOT_DELETE_POST(206, BAD_REQUEST.value(), "게시물 작성자 본인만 게시물을 삭제할 수 있습니다."),
 
     //User
     EMAIL_ALREADY_EXISTS(300, BAD_REQUEST.value(), "이미 존재하는 이메일입니다."),
