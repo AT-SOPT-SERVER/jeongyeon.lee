@@ -35,7 +35,10 @@ public class PostService {
         }
         validateCreatedAt();
         User user = getFindUser(userId);
-        postRepository.save(new Post(title, content, tag, user));
+        Post post = new Post(title, content, tag);
+        user.addPost(post);
+        postRepository.save(post);
+
         return null;
     }
 

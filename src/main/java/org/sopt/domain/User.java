@@ -1,9 +1,9 @@
 package org.sopt.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class User {
@@ -14,6 +14,9 @@ public class User {
     private String name;
 
     private String email;
+
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
+    private List<Post> posts = new ArrayList<>();
 
     protected User() {
 
@@ -35,4 +38,10 @@ public class User {
     public String getEmail() {
         return email;
     }
+
+    public void addPost(Post post) {
+        posts.add(post);
+        post.setUser(this);
+    }
+
 }

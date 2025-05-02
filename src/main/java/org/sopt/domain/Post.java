@@ -26,17 +26,16 @@ public class Post {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
     public Post() {
 
     }
 
-    public Post(String title, String content, String tag, User user) {
+    public Post(String title, String content, String tag) {
         this.title = title;
         this.content = content;
-        this.user = user;
         this.tag = tag;
     }
 
@@ -63,5 +62,9 @@ public class Post {
     public void updateTitleAndContent(String title, String content) {
         this.title = title;
         this.content = content;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
