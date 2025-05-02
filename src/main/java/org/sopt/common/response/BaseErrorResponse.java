@@ -21,7 +21,7 @@ public class BaseErrorResponse {
     }
 
     public BaseErrorResponse(ErrorCode errorCode) {
-        this.code = errorCode.getCode();
+        this.code = errorCode.getHttpStatus();
         this.message = errorCode.getMessage();
         this.success = false;
         this.timestamp = LocalDateTime.now();
