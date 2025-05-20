@@ -1,8 +1,10 @@
 package org.sopt.controller;
 
+import jakarta.validation.Valid;
 import org.sopt.common.response.BaseResponse;
 import org.sopt.dto.request.PostRequest;
 import org.sopt.dto.request.PostUpdateRequest;
+import org.sopt.dto.response.PostDetailResponse;
 import org.sopt.dto.response.PostResponse;
 import org.sopt.service.PostService;
 import org.springframework.web.bind.annotation.*;
@@ -19,9 +21,9 @@ public class PostController {
     }
 
     @PostMapping()
-    public BaseResponse<Void> createPost(@RequestBody final PostRequest req) {
-        postService.createPost(req.title());
-        return BaseResponse.ok(null);
+    public BaseResponse<Void> createPost(@RequestBody  @Valid final PostRequest req,
+                                         @RequestHeader final Long userId) {
+        return BaseResponse.ok(postService.createPost(req.title(), req.content(), req.tag(), userId));
     }
 
     @GetMapping()
@@ -30,23 +32,34 @@ public class PostController {
     }
 
     @GetMapping("/{postId}")
-    public BaseResponse<PostResponse> getPostDetailById(@PathVariable final Long postId) {
+    public BaseResponse<PostDetailResponse> getPostDetailById(@PathVariable final Long postId) {
         return BaseResponse.ok(postService.getPostDetailById(postId));
     }
 
     @DeleteMapping("/{postId}")
-    public BaseResponse<Void> deletePostById(@PathVariable final Long postId) {
-        return BaseResponse.ok(postService.deletePostById(postId));
+    public BaseResponse<Void> deletePostById(@PathVariable final Long postId, @RequestHeader final Long userId) {
+        return BaseResponse.ok(postService.deletePostById(postId, userId));
     }
 
     @PutMapping()
-    public BaseResponse<Void> updatePostTitle(@RequestBody final PostUpdateRequest req) {
-        return BaseResponse.ok(postService.updatePost(req.updateId(), req.newTitle()));
+    public BaseResponse<Void> updatePostTitle(@RequestBody @Valid final PostUpdateRequest req,
+                                              @RequestHeader final Long userId) {
+        return BaseResponse.ok(postService.updatePost(userId, req.updateId(), req.newTitle(), req.newContent()));
     }
 
-    @GetMapping("/search")
-    public BaseResponse<List<PostResponse>> searchPostsByKeyword(@RequestParam final String keyword) {
-        return BaseResponse.ok(postService.getAllPostByKeyword(keyword));
+    @GetMapping("/search-title")
+    public BaseResponse<List<PostDetailResponse>> searchPostsByTitle(@RequestParam final String keyword) {
+        return BaseResponse.ok(postService.getAllPostByTitle(keyword));
+    }
+
+    @GetMapping("/search-author")
+    public BaseResponse<List<PostDetailResponse>> searchPostsByAuthor(@RequestParam final String userName) {
+        return BaseResponse.ok(postService.getAllPostByUserName(userName));
+    }
+
+    @GetMapping("/search-tag")
+    public BaseResponse<List<PostDetailResponse>> searchPostsByTag(@RequestParam final String tag) {
+        return BaseResponse.ok(postService.getAllPostByTag(tag));
     }
 
 }
