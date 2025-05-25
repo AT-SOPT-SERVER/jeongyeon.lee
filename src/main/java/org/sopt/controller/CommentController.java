@@ -25,4 +25,10 @@ public class CommentController {
         commentService.updateComment(userId, req.commentId(), req.newContent());
         return BaseResponse.ok(null);
     }
+
+    @DeleteMapping("/{commentId}")
+    public BaseResponse<Void> deleteComment(@RequestHeader Long userId, @PathVariable Long commentId){
+        commentService.deleteComment(userId, commentId);
+        return BaseResponse.ok(null);
+    }
 }

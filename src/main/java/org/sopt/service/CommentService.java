@@ -60,4 +60,14 @@ public class CommentService {
         commentRepository.save(comment);
     }
 
+    @Transactional
+    public void deleteComment(Long userId, Long commentId){
+        User user = getUser(userId);
+        Comment comment = getComment(commentId);
+        if(!user.equals(comment.getUser())){
+            throw new CustomException(CANNOT_DELETE_COMMENT);
+        }
+        commentRepository.delete(comment);
+    }
+
 }
