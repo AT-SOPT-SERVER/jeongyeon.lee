@@ -1,4 +1,7 @@
 package org.sopt.dto.response;
 
-public record PostDetailResponse(String title, String content, String userName) {
+import java.util.List;
+
+public record PostDetailResponse(String title, String content, String userName,
+                                 List<String> comments) {
 }

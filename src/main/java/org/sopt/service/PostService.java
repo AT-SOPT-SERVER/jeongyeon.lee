@@ -1,10 +1,12 @@
 package org.sopt.service;
 
+import lombok.RequiredArgsConstructor;
 import org.sopt.common.exception.CustomException;
 import org.sopt.domain.Post;
 import org.sopt.domain.User;
 import org.sopt.dto.response.PostDetailResponse;
 import org.sopt.dto.response.PostResponse;
+import org.sopt.repository.CommentRepository;
 import org.sopt.repository.PostRepository;
 import org.sopt.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -19,14 +21,11 @@ import static org.sopt.common.exception.ErrorCode.*;
 
 @Transactional(readOnly = true)
 @Service
+@RequiredArgsConstructor
 public class PostService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
-
-    public PostService(PostRepository postRepository, UserRepository userRepository) {
-        this.postRepository = postRepository;
-        this.userRepository = userRepository;
-    }
+    private final CommentRepository commentRepository;
 
     @Transactional
     public Void createPost(String title, String content, String tag, Long userId) {
@@ -60,9 +59,11 @@ public class PostService {
 
     public PostDetailResponse getPostDetailById(Long id) {
         Post findPost = getFindPost(id);
+
         return new PostDetailResponse(findPost.getTitle(),
                 findPost.getContent(),
-                findPost.getUser().getName());
+                findPost.getUser().getName(),
+                commentRepository.findAllContentByPostId(findPost.getId()));
     }
 
     @Transactional
@@ -104,21 +105,24 @@ public class PostService {
     public List<PostDetailResponse> getAllPostByTitle(String keyword) {
         return postRepository.findAllByTitle(keyword).stream().map(post -> new PostDetailResponse(post.getTitle(),
                 post.getContent(),
-                post.getUser().getName())).
+                post.getUser().getName(),
+                        commentRepository.findAllContentByPostId(post.getId()))).
                 toList();
     }
 
     public List<PostDetailResponse> getAllPostByUserName(String userName){
         return postRepository.findAllByUserName(userName).stream().map(post -> new PostDetailResponse(post.getTitle(),
                         post.getContent(),
-                        post.getUser().getName())).
+                        post.getUser().getName(),
+                commentRepository.findAllContentByPostId(post.getId()))).
                 toList();
     }
 
     public List<PostDetailResponse> getAllPostByTag(String tag){
         return postRepository.findAllByTag(tag).stream().map(post -> new PostDetailResponse(post.getTitle(),
                         post.getContent(),
-                        post.getUser().getName())).
+                        post.getUser().getName(),
+                commentRepository.findAllContentByPostId(post.getId()))).
                 toList();
     }
 
