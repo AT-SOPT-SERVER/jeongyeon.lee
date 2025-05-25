@@ -2,13 +2,15 @@ package org.sopt.domain.comment.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.sopt.global.exception.CustomException;
 import org.sopt.domain.comment.model.Comment;
-import org.sopt.domain.post.model.Post;
-import org.sopt.domain.user.model.User;
+import org.sopt.domain.comment.model.CommentLike;
+import org.sopt.domain.comment.repository.CommentLikeRepository;
 import org.sopt.domain.comment.repository.CommentRepository;
+import org.sopt.domain.post.model.Post;
 import org.sopt.domain.post.repository.PostRepository;
+import org.sopt.domain.user.model.User;
 import org.sopt.domain.user.repository.UserRepository;
+import org.sopt.global.exception.CustomException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +24,7 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final PostRepository postRepository;
     private final UserRepository userRepository;
+    private final CommentLikeRepository commentLikeRepository;
 
     @Transactional
     public void createComment(Long userId, Long postId, String content){
@@ -68,6 +71,20 @@ public class CommentService {
             throw new CustomException(CANNOT_DELETE_COMMENT);
         }
         commentRepository.delete(comment);
+    }
+
+    @Transactional
+    public void addLike(Long userId, Long commentId){
+        Comment comment = getComment(commentId);
+        User user = getUser(userId);
+        if(commentLikeRepository.existsByCommentAndUser(comment, user)){
+            comment.decreaseLikeCount();
+            commentLikeRepository.save(new CommentLike(comment, user));
+            return;
+        }
+        comment.increaseLikeCount();
+        commentLikeRepository.deleteByUserAndComment(user, comment);
+
     }
 
 }

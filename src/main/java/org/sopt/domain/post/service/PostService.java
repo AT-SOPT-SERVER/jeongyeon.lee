@@ -130,7 +130,7 @@ public class PostService {
     }
 
     @Transactional
-    public void addLike(Long postId, Long userId){
+    public void addLike(Long userId, Long postId){
         Post findPost = getFindPost(postId);
         User findUser = getFindUser(userId);
         if(postLikeRespository.existsByPostAndUser(findPost, findUser)){

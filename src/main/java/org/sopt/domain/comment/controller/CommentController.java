@@ -31,4 +31,10 @@ public class CommentController {
         commentService.deleteComment(userId, commentId);
         return BaseResponse.ok(null);
     }
+
+    @PostMapping("/like/{commentId}")
+    public BaseResponse<Void> likeComment(@RequestHeader Long userId, @PathVariable Long commentId){
+        commentService.addLike(userId, commentId);
+        return BaseResponse.ok(null);
+    }
 }

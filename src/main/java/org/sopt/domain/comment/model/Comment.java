@@ -18,6 +18,8 @@ public class Comment {
     @Column(nullable = false)
     private String content;
 
+    private int likeCount = 0;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
     private Post post;
@@ -28,5 +30,13 @@ public class Comment {
 
     public void updateContent(String newContent){
         this.content = newContent;
+    }
+
+    public void increaseLikeCount() {
+        this.likeCount++;
+    }
+
+    public void decreaseLikeCount() {
+        this.likeCount--;
     }
 }
