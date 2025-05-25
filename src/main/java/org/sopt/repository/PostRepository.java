@@ -14,6 +14,7 @@ import java.util.List;
 public interface PostRepository extends JpaRepository<Post, Long> {
     boolean existsByTitle(String title);
 
+
     @Query("select p from Post p join fetch p.user where p.title like concat('%', :keyword, '%')")
     List<Post> findAllByTitle(@Param("keyword") String keyword);
 

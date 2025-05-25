@@ -11,6 +11,7 @@ import java.util.List;
 
 @Entity
 @Getter
+@Table(name = "users")
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
@@ -28,6 +29,11 @@ public class User {
     public void addPost(Post post) {
         posts.add(post);
         post.setUser(this);
+    }
+
+    public User(String name, String email) {
+        this.name = name;
+        this.email = email;
     }
 
 }
