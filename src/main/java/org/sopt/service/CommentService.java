@@ -12,8 +12,7 @@ import org.sopt.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.sopt.common.exception.ErrorCode.POST_NOT_FOUND;
-import static org.sopt.common.exception.ErrorCode.USER_NOT_FOUND;
+import static org.sopt.common.exception.ErrorCode.*;
 
 @Service
 @RequiredArgsConstructor
@@ -26,8 +25,8 @@ public class CommentService {
 
     @Transactional
     public void createComment(Long userId, Long postId, String content){
-        Post post = postRepository.findById(postId).orElseThrow(() -> new CustomException(POST_NOT_FOUND));
-        User user = userRepository.findById(userId).orElseThrow(() -> new CustomException(USER_NOT_FOUND));
+        Post post = getPost(postId);
+        User user = getUser(userId);
 
         Comment comment = Comment.builder()
                 .content(content)
@@ -36,6 +35,29 @@ public class CommentService {
                 .build();
         commentRepository.save(comment);
 
+    }
+
+    private User getUser(Long userId) {
+        return userRepository.findById(userId).orElseThrow(() -> new CustomException(USER_NOT_FOUND));
+    }
+
+    private Post getPost(Long postId) {
+        return postRepository.findById(postId).orElseThrow(() -> new CustomException(POST_NOT_FOUND));
+    }
+
+    private Comment getComment(Long commentId) {
+        return commentRepository.findById(commentId).orElseThrow(() -> new CustomException(COMMENT_NOT_FOUND));
+    }
+
+    @Transactional
+    public void updateComment(Long userId, Long commentId, String newContent){
+        User user = getUser(userId);
+        Comment comment = getComment(commentId);
+        comment.updateContent(newContent);
+        if(!user.equals(comment.getUser())){
+            throw new CustomException(CANNOT_UPDATE_COMMENT);
+        }
+        commentRepository.save(comment);
     }
 
 }

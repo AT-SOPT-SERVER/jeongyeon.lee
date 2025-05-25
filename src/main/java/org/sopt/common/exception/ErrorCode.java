@@ -20,7 +20,11 @@ public enum ErrorCode {
 
     //User
     EMAIL_ALREADY_EXISTS(300, CONFLICT.value(), "이미 존재하는 이메일입니다."),
-    USER_NOT_FOUND(301, NOT_FOUND.value(), "존재하지 않는 사용자입니다.")
+    USER_NOT_FOUND(301, NOT_FOUND.value(), "존재하지 않는 사용자입니다."),
+
+    //Comment
+    COMMENT_NOT_FOUND(400, NOT_FOUND.value(), "존재하지 않는 댓글입니다."),
+    CANNOT_UPDATE_COMMENT(401, FORBIDDEN.value(), "댓글 작성자 본인만 댓글을 수정할 수 있습니다.")
     ;
 
     private final int code;
