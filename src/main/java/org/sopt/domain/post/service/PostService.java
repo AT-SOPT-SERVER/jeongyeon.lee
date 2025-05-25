@@ -135,11 +135,12 @@ public class PostService {
         User findUser = getFindUser(userId);
         if(postLikeRespository.existsByPostAndUser(findPost, findUser)){
             findPost.decreaseLikeCount();
-            postLikeRespository.save(new PostLike(findPost, findUser));
+            postLikeRespository.deleteByUserAndPost(findUser, findPost);
             return;
         }
         findPost.increaseLikeCount();
-        postLikeRespository.deleteByUserAndPost(findUser, findPost);
+        postLikeRespository.save(new PostLike(findPost, findUser));
+
 
     }
 

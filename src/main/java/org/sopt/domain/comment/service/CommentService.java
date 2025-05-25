@@ -79,11 +79,11 @@ public class CommentService {
         User user = getUser(userId);
         if(commentLikeRepository.existsByCommentAndUser(comment, user)){
             comment.decreaseLikeCount();
-            commentLikeRepository.save(new CommentLike(comment, user));
+            commentLikeRepository.deleteByUserAndComment(user, comment);
             return;
         }
         comment.increaseLikeCount();
-        commentLikeRepository.deleteByUserAndComment(user, comment);
+        commentLikeRepository.save(new CommentLike(comment, user));
 
     }
 

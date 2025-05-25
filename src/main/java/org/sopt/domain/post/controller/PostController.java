@@ -64,7 +64,7 @@ public class PostController {
 
     @PostMapping("like/{postId}")
     public BaseResponse<Void> setPostLike(@RequestHeader Long userId, @PathVariable final Long postId) {
-        postService.addLike(postId, userId);
+        postService.addLike(userId, postId);
         return BaseResponse.ok(null);
     }
 
