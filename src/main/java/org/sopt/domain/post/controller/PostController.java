@@ -1,12 +1,12 @@
 package org.sopt.domain.post.controller;
 
 import jakarta.validation.Valid;
-import org.sopt.global.response.BaseResponse;
 import org.sopt.domain.post.dto.request.PostRequest;
 import org.sopt.domain.post.dto.request.PostUpdateRequest;
+import org.sopt.domain.post.dto.response.PagePostResponse;
 import org.sopt.domain.post.dto.response.PostDetailResponse;
-import org.sopt.domain.post.dto.response.PostResponse;
 import org.sopt.domain.post.service.PostService;
+import org.sopt.global.response.BaseResponse;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,8 +27,8 @@ public class PostController {
     }
 
     @GetMapping()
-    public BaseResponse<List<PostResponse>> getAllPosts() {
-        return BaseResponse.ok(postService.getAllPost());
+    public BaseResponse<PagePostResponse> getAllPosts(@RequestParam(defaultValue = "0") int page) {
+        return BaseResponse.ok(postService.getAllPost(page));
     }
 
     @GetMapping("/{postId}")

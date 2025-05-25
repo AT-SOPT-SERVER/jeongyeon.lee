@@ -2,6 +2,7 @@ package org.sopt.domain.post.service;
 
 import lombok.RequiredArgsConstructor;
 import org.sopt.domain.comment.repository.CommentRepository;
+import org.sopt.domain.post.dto.response.PagePostResponse;
 import org.sopt.domain.post.dto.response.PostDetailResponse;
 import org.sopt.domain.post.dto.response.PostResponse;
 import org.sopt.domain.post.model.Post;
@@ -11,6 +12,8 @@ import org.sopt.domain.post.repository.PostRepository;
 import org.sopt.domain.user.model.User;
 import org.sopt.domain.user.repository.UserRepository;
 import org.sopt.global.exception.CustomException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +32,7 @@ public class PostService {
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
     private final PostLikeRespository postLikeRespository;
+    private static final int PAGE_SIZE = 10;
 
     @Transactional
     public Void createPost(String title, String content, String tag, Long userId) {
@@ -54,10 +58,14 @@ public class PostService {
         }
     }
 
-    public List<PostResponse> getAllPost() {
-        return postRepository.findAllByOrderByCreatedAt().stream().map(post -> new PostResponse(
-                post.getTitle(),
-                post.getUser().getName())).toList();
+    public PagePostResponse getAllPost(int page) {
+        PageRequest pageRequest = PageRequest.of(page, PAGE_SIZE);
+        Page<Post> posts = postRepository.findAllByOrderByCreatedAtDesc(pageRequest);
+
+        List<PostResponse> postResponses = posts.stream()
+                .map(post -> new PostResponse(post.getTitle(), post.getUser().getName()))
+                .toList();
+        return new PagePostResponse(postResponses, posts.getNumber(), posts.getTotalPages());
     }
 
     public PostDetailResponse getPostDetailById(Long id) {
