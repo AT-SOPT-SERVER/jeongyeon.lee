@@ -1,14 +1,16 @@
 package org.sopt.domain.post.service;
 
 import lombok.RequiredArgsConstructor;
-import org.sopt.global.exception.CustomException;
-import org.sopt.domain.post.model.Post;
-import org.sopt.domain.user.model.User;
+import org.sopt.domain.comment.repository.CommentRepository;
 import org.sopt.domain.post.dto.response.PostDetailResponse;
 import org.sopt.domain.post.dto.response.PostResponse;
-import org.sopt.domain.comment.repository.CommentRepository;
+import org.sopt.domain.post.model.Post;
+import org.sopt.domain.post.model.PostLike;
+import org.sopt.domain.post.repository.PostLikeRespository;
 import org.sopt.domain.post.repository.PostRepository;
+import org.sopt.domain.user.model.User;
 import org.sopt.domain.user.repository.UserRepository;
+import org.sopt.global.exception.CustomException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +28,7 @@ public class PostService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
+    private final PostLikeRespository postLikeRespository;
 
     @Transactional
     public Void createPost(String title, String content, String tag, Long userId) {
@@ -124,6 +127,20 @@ public class PostService {
                         post.getUser().getName(),
                 commentRepository.findAllContentByPostId(post.getId()))).
                 toList();
+    }
+
+    @Transactional
+    public void addLike(Long postId, Long userId){
+        Post findPost = getFindPost(postId);
+        User findUser = getFindUser(userId);
+        if(postLikeRespository.existsByPostAndUser(findPost, findUser)){
+            findPost.decreaseLikeCount();
+            postLikeRespository.save(new PostLike(findPost, findUser));
+            return;
+        }
+        findPost.increaseLikeCount();
+        postLikeRespository.deleteByUserAndPost(findUser, findPost);
+
     }
 
 }

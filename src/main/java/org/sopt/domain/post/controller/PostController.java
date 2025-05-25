@@ -62,4 +62,10 @@ public class PostController {
         return BaseResponse.ok(postService.getAllPostByTag(tag));
     }
 
+    @PostMapping("like/{postId}")
+    public BaseResponse<Void> setPostLike(@RequestHeader Long userId, @PathVariable final Long postId) {
+        postService.addLike(postId, userId);
+        return BaseResponse.ok(null);
+    }
+
 }

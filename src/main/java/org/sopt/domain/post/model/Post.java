@@ -26,6 +26,8 @@ public class Post {
 
     private String tag;
 
+    private int likeCount = 0;
+
     @CreatedDate
     private LocalDateTime createdAt;
 
@@ -45,6 +47,14 @@ public class Post {
     public void updateTitleAndContent(String title, String content) {
         this.title = title;
         this.content = content;
+    }
+
+    public void increaseLikeCount() {
+        this.likeCount++;
+    }
+
+    public void decreaseLikeCount() {
+        this.likeCount--;
     }
 
 }
