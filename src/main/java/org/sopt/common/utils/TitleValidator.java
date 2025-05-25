@@ -9,7 +9,6 @@ public class TitleValidator implements ConstraintValidator<ValidTitle, String> {
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
-        if (value == null) return true;
         return TextUtils.getLengthOfEmojiContainableText(value) <= MAX_LENGTH;
     }
 }

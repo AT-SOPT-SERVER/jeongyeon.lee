@@ -32,7 +32,6 @@ public class Post {
     private LocalDateTime updatedAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
     private User user;
 
     public Post(String title, String content, String tag) {
