@@ -23,7 +23,7 @@ public class PostController {
     @PostMapping()
     public BaseResponse<Void> createPost(@RequestBody  @Valid final PostRequest req,
                                          @RequestHeader final Long userId) {
-        return BaseResponse.ok(postService.createPost(req.title(), req.content(), req.tag(), userId));
+        return BaseResponse.ok(postService.createPost(req.title(), req.content(), req.tags(), userId));
     }
 
     @GetMapping()
@@ -52,7 +52,7 @@ public class PostController {
                                                                      @RequestParam final String searchKeyword) {
         return BaseResponse.ok(postService.searchPost(keyword, searchKeyword));
     }
-    
+
 
     @PostMapping("like/{postId}")
     public BaseResponse<Void> setPostLike(@RequestHeader Long userId, @PathVariable final Long postId) {

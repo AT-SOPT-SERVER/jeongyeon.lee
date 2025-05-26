@@ -18,6 +18,7 @@ public enum ErrorCode {
     CANNOT_UPDATE_POST(205, FORBIDDEN.value(), "게시물 작성자 본인만 게시물을 수정할 수 있습니다."),
     CANNOT_DELETE_POST(206, FORBIDDEN.value(), "게시물 작성자 본인만 게시물을 삭제할 수 있습니다."),
     BAD_KEYWORD(207, BAD_REQUEST.value(), "잘못된 검색 기준입니다."),
+    INVALID_TAG(208, BAD_REQUEST.value(), "태그는 최대 2개까지만 가능합니다."),
 
     //User
     EMAIL_ALREADY_EXISTS(300, CONFLICT.value(), "이미 존재하는 이메일입니다."),

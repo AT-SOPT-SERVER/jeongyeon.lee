@@ -8,6 +8,8 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @EntityListeners(AuditingEntityListener.class)
 @Entity
@@ -20,11 +22,11 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String title;
 
+    @Column(nullable = false)
     private String content;
-
-    private String tag;
 
     private int likeCount = 0;
 
@@ -37,12 +39,18 @@ public class Post {
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
-    public Post(String title, String content, String tag) {
-        this.title = title;
-        this.content = content;
-        this.tag = tag;
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PostTag> tags = new ArrayList<>();
+
+    public void addTag(PostTag postTag) {
+        tags.add(postTag);
+        postTag.setPost(this);
     }
 
+    public void removeTag(PostTag tag) {
+        tags.remove(tag);
+        tag.setPost(null);
+    }
 
     public void updateTitleAndContent(String title, String content) {
         this.title = title;
@@ -57,4 +65,8 @@ public class Post {
         this.likeCount--;
     }
 
+    public Post(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
 }

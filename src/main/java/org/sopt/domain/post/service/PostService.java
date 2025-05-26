@@ -7,6 +7,7 @@ import org.sopt.domain.post.dto.response.PostDetailResponse;
 import org.sopt.domain.post.dto.response.PostResponse;
 import org.sopt.domain.post.model.Post;
 import org.sopt.domain.post.model.PostLike;
+import org.sopt.domain.post.model.PostTag;
 import org.sopt.domain.post.repository.PostCustomRepositoryImpl;
 import org.sopt.domain.post.repository.PostLikeRespository;
 import org.sopt.domain.post.repository.PostRepository;
@@ -39,14 +40,21 @@ public class PostService {
     private static final int PAGE_SIZE = 10;
 
     @Transactional
-    public Void createPost(String title, String content, String tag, Long userId) {
+    public Void createPost(String title, String content, List<String> tags, Long userId) {
         if(postRepository.existsByTitle(title)) {
             throw new CustomException(TITLE_ALREADY_EXISTS);
         }
         validateCreatedAt();
         User user = getFindUser(userId);
-        Post post = new Post(title, content, tag);
+        Post post = new Post(title, content);
         user.addPost(post);
+        tags.forEach(tagName -> {
+            PostTag tag = new PostTag(tagName);
+            post.addTag(tag);
+        });
+
+        user.addPost(post);
+        postRepository.save(post);
         postRepository.save(post);
 
         return null;
@@ -132,22 +140,6 @@ public class PostService {
                         commentRepository.findAllCommentByPostId(post.getId())
                 ))
                 .toList();
-    }
-
-    public List<PostDetailResponse> getAllPostByUserName(String userName){
-        return postRepository.findAllByUserName(userName).stream().map(post -> new PostDetailResponse(post.getTitle(),
-                        post.getContent(),
-                        post.getUser().getName(),
-                commentRepository.findAllCommentByPostId(post.getId()))).
-                toList();
-    }
-
-    public List<PostDetailResponse> getAllPostByTag(String tag){
-        return postRepository.findAllByTag(tag).stream().map(post -> new PostDetailResponse(post.getTitle(),
-                        post.getContent(),
-                        post.getUser().getName(),
-                commentRepository.findAllCommentByPostId(post.getId()))).
-                toList();
     }
 
     @Transactional

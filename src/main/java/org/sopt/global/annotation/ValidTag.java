@@ -7,12 +7,12 @@ import org.sopt.global.utils.TagValidator;
 import java.lang.annotation.*;
 
 
-@Documented
-@Constraint(validatedBy = TagValidator.class)
 @Target({ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
+@Constraint(validatedBy = TagValidator.class)
+@Documented
 public @interface ValidTag {
-    String message() default "허용되지 않은 태그입니다. (백엔드, 데이터베이스, 인프라 중 하나여야 함)";
+    String message() default "태그는 최대 2개까지, 백엔드/데이터베이스/인프라/기타 중에서 선택해주세요.";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }
