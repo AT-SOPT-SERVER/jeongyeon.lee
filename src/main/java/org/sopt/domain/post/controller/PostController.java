@@ -47,20 +47,12 @@ public class PostController {
         return BaseResponse.ok(postService.updatePost(userId, req.updateId(), req.newTitle(), req.newContent()));
     }
 
-    @GetMapping("/search-title")
-    public BaseResponse<List<PostDetailResponse>> searchPostsByTitle(@RequestParam final String keyword) {
-        return BaseResponse.ok(postService.getAllPostByTitle(keyword));
+    @GetMapping("/search")
+    public BaseResponse<List<PostDetailResponse>> searchPostsByTitle(@RequestParam final String keyword,
+                                                                     @RequestParam final String searchKeyword) {
+        return BaseResponse.ok(postService.searchPost(keyword, searchKeyword));
     }
-
-    @GetMapping("/search-author")
-    public BaseResponse<List<PostDetailResponse>> searchPostsByAuthor(@RequestParam final String userName) {
-        return BaseResponse.ok(postService.getAllPostByUserName(userName));
-    }
-
-    @GetMapping("/search-tag")
-    public BaseResponse<List<PostDetailResponse>> searchPostsByTag(@RequestParam final String tag) {
-        return BaseResponse.ok(postService.getAllPostByTag(tag));
-    }
+    
 
     @PostMapping("like/{postId}")
     public BaseResponse<Void> setPostLike(@RequestHeader Long userId, @PathVariable final Long postId) {

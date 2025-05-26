@@ -7,6 +7,7 @@ import org.sopt.domain.post.dto.response.PostDetailResponse;
 import org.sopt.domain.post.dto.response.PostResponse;
 import org.sopt.domain.post.model.Post;
 import org.sopt.domain.post.model.PostLike;
+import org.sopt.domain.post.repository.PostCustomRepositoryImpl;
 import org.sopt.domain.post.repository.PostLikeRespository;
 import org.sopt.domain.post.repository.PostRepository;
 import org.sopt.domain.user.model.User;
@@ -32,6 +33,9 @@ public class PostService {
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
     private final PostLikeRespository postLikeRespository;
+    private final PostCustomRepositoryImpl postCustomRepositoryImpl;
+    private static final String TITLE = "제목";
+    private static final String AUTHOR = "작성자";
     private static final int PAGE_SIZE = 10;
 
     @Transactional
@@ -74,7 +78,7 @@ public class PostService {
         return new PostDetailResponse(findPost.getTitle(),
                 findPost.getContent(),
                 findPost.getUser().getName(),
-                commentRepository.findAllContentByPostId(findPost.getId()));
+                commentRepository.findAllCommentByPostId(findPost.getId()));
     }
 
     @Transactional
@@ -113,19 +117,28 @@ public class PostService {
         return userRepository.findById(userId).orElseThrow(() -> new CustomException((USER_NOT_FOUND)));
     }
 
-    public List<PostDetailResponse> getAllPostByTitle(String keyword) {
-        return postRepository.findAllByTitle(keyword).stream().map(post -> new PostDetailResponse(post.getTitle(),
-                post.getContent(),
-                post.getUser().getName(),
-                        commentRepository.findAllContentByPostId(post.getId()))).
-                toList();
+    public List<PostDetailResponse> searchPost(String keyword, String searchKeyword) {
+        List<Post> posts = switch (searchKeyword) {
+            case TITLE -> postCustomRepositoryImpl.searchByTitle(keyword);
+            case AUTHOR -> postCustomRepositoryImpl.searchByAuthor(keyword);
+            default -> throw new CustomException(BAD_KEYWORD);
+        };
+
+        return posts.stream()
+                .map(post -> new PostDetailResponse(
+                        post.getTitle(),
+                        post.getContent(),
+                        post.getUser().getName(),
+                        commentRepository.findAllCommentByPostId(post.getId())
+                ))
+                .toList();
     }
 
     public List<PostDetailResponse> getAllPostByUserName(String userName){
         return postRepository.findAllByUserName(userName).stream().map(post -> new PostDetailResponse(post.getTitle(),
                         post.getContent(),
                         post.getUser().getName(),
-                commentRepository.findAllContentByPostId(post.getId()))).
+                commentRepository.findAllCommentByPostId(post.getId()))).
                 toList();
     }
 
@@ -133,7 +146,7 @@ public class PostService {
         return postRepository.findAllByTag(tag).stream().map(post -> new PostDetailResponse(post.getTitle(),
                         post.getContent(),
                         post.getUser().getName(),
-                commentRepository.findAllContentByPostId(post.getId()))).
+                commentRepository.findAllCommentByPostId(post.getId()))).
                 toList();
     }
 
