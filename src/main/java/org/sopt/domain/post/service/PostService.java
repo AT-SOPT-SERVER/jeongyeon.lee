@@ -37,6 +37,7 @@ public class PostService {
     private final PostCustomRepositoryImpl postCustomRepositoryImpl;
     private static final String TITLE = "제목";
     private static final String AUTHOR = "작성자";
+    private static final String TAG = "태그";
     private static final int PAGE_SIZE = 10;
 
     @Transactional
@@ -44,7 +45,7 @@ public class PostService {
         if(postRepository.existsByTitle(title)) {
             throw new CustomException(TITLE_ALREADY_EXISTS);
         }
-        validateCreatedAt();
+//        validateCreatedAt();
         User user = getFindUser(userId);
         Post post = new Post(title, content);
         user.addPost(post);
@@ -129,6 +130,7 @@ public class PostService {
         List<Post> posts = switch (searchKeyword) {
             case TITLE -> postCustomRepositoryImpl.searchByTitle(keyword);
             case AUTHOR -> postCustomRepositoryImpl.searchByAuthor(keyword);
+            case TAG -> postCustomRepositoryImpl.searchByTag(keyword);
             default -> throw new CustomException(BAD_KEYWORD);
         };
 

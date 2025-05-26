@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 import static org.sopt.domain.post.model.QPost.post;
+import static org.sopt.domain.post.model.QPostTag.postTag;
 
 @Repository
 @AllArgsConstructor
@@ -26,6 +27,17 @@ public class PostCustomRepositoryImpl implements PostCustomRepository {
         return queryFactory.selectFrom(post)
                 .where(post.user.name.contains(author))
                 .fetch();
+    }
+
+    @Override
+    public List<Post> searchByTag(String tag) {
+        return queryFactory
+                .selectFrom(post)
+                .distinct()
+                .join(post.tags,postTag).fetchJoin()
+                .where(postTag.tagName.eq(tag))
+                .fetch();
+
     }
 
 }

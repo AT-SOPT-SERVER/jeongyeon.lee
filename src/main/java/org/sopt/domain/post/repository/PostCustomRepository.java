@@ -7,4 +7,5 @@ import java.util.List;
 public interface PostCustomRepository {
     List<Post> searchByTitle(String title);
     List<Post> searchByAuthor(String author);
+    List<Post> searchByTag(String tag);
 }
