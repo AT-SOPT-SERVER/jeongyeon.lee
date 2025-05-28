@@ -14,6 +14,8 @@ import org.sopt.domain.post.repository.PostRepository;
 import org.sopt.domain.user.model.User;
 import org.sopt.domain.user.repository.UserRepository;
 import org.sopt.global.exception.CustomException;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -40,12 +42,13 @@ public class PostService {
     private static final String TAG = "태그";
     private static final int PAGE_SIZE = 10;
 
+    @CacheEvict(value = "post", allEntries = true)
     @Transactional
     public Void createPost(String title, String content, List<String> tags, Long userId) {
         if(postRepository.existsByTitle(title)) {
             throw new CustomException(TITLE_ALREADY_EXISTS);
         }
-//        validateCreatedAt();
+        validateCreatedAt();
         User user = getFindUser(userId);
         Post post = new Post(title, content);
         user.addPost(post);
@@ -71,6 +74,7 @@ public class PostService {
         }
     }
 
+    @Cacheable(value = "post", key = "#page")
     public PagePostResponse getAllPost(int page) {
         PageRequest pageRequest = PageRequest.of(page, PAGE_SIZE);
         Page<Post> posts = postRepository.findAllByOrderByCreatedAtDesc(pageRequest);
@@ -81,6 +85,7 @@ public class PostService {
         return new PagePostResponse(postResponses, posts.getNumber(), posts.getTotalPages());
     }
 
+    @Cacheable(value = "post", key = "#id")
     public PostDetailResponse getPostDetailById(Long id) {
         Post findPost = getFindPost(id);
 
@@ -90,6 +95,7 @@ public class PostService {
                 commentRepository.findAllCommentByPostId(findPost.getId()));
     }
 
+    @CacheEvict(value = {"post", "postDetail"}, key = "#id")
     @Transactional
     public Void deletePostById(Long id, Long userId) {
         Post findPost = getFindPost(id);
@@ -100,6 +106,7 @@ public class PostService {
         return null;
     }
 
+    @CacheEvict(value = {"post", "postDetail"}, allEntries = true)
     @Transactional
     public Void updatePost(Long userId, Long updateId, String newTitle, String newContent) {
         Post findPost = getFindPost(updateId);
