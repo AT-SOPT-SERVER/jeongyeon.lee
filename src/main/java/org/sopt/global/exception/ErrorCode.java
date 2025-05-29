@@ -9,6 +9,11 @@ public enum ErrorCode {
     METHOD_NOT_ALLOWED(100, HttpStatus.METHOD_NOT_ALLOWED.value(), "유효하지 않은 Http 메서드입니다."),
     API_NOT_FOUND(101, HttpStatus.NOT_FOUND.value(), "존재하지 않는 API 입니다."),
     INTERNAL_SERVER_ERROR(102, HttpStatus.INTERNAL_SERVER_ERROR.value(), "서버 내부 오류입니다."),
+    INVALID_SIGNATURE(103, UNAUTHORIZED.value(), "잘못된 서명입니다."),
+    TOKEN_EXPIRED(104, UNAUTHORIZED.value(), "만료된 토큰입니다."),
+    UNSUPPORTED_TOKEN(105, BAD_REQUEST.value(), "지원하지 않는 토큰입니다."),
+    INVALID_TOKEN(106, BAD_REQUEST.value(), "잘못된 토큰입니다."),
+
 
     //Post
     INVALID_TITLE_LENGTH(201, BAD_REQUEST.value(), "제목은 30자를 넘을 수 없습니다."),
