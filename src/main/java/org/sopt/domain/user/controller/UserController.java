@@ -18,7 +18,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping()
+    @PostMapping("signup")
     public BaseResponse<Void> createUser(@RequestBody @Valid UserSignUpRequest req){
         return BaseResponse.ok(userService.createUser(req.name(), req.email()));
     }
