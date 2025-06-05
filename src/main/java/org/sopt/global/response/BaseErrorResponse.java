@@ -27,6 +27,13 @@ public class BaseErrorResponse {
         this.timestamp = LocalDateTime.now();
     }
 
+    public BaseErrorResponse(int code, String message) {
+        this.code = code;
+        this.message = message;
+        this.success = false;
+        this.timestamp = LocalDateTime.now();
+    }
+
     public boolean isSuccess() {
         return success;
     }
@@ -42,5 +49,6 @@ public class BaseErrorResponse {
     public LocalDateTime getTimestamp() {
         return timestamp;
     }
+
 
 }
