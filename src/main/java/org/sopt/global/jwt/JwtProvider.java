@@ -80,6 +80,18 @@ public class JwtProvider {
         }
         return true;
     }
+
+    public Claims getClaims(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+    }
+
+    public Long getUserId(String token) {
+        return Long.parseLong(getClaims(token).get("userId").toString());
+    }
 }
 
 
