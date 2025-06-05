@@ -2,10 +2,12 @@ package org.sopt.global.response;
 
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import lombok.Getter;
 import org.sopt.global.exception.ErrorCode;
 
 import java.time.LocalDateTime;
 
+@Getter
 @JsonPropertyOrder({"success", "code", "message", "timestamp"})
 public class BaseErrorResponse {
     private final boolean success;
@@ -33,22 +35,4 @@ public class BaseErrorResponse {
         this.success = false;
         this.timestamp = LocalDateTime.now();
     }
-
-    public boolean isSuccess() {
-        return success;
-    }
-
-    public int getCode() {
-        return code;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public LocalDateTime getTimestamp() {
-        return timestamp;
-    }
-
-
 }

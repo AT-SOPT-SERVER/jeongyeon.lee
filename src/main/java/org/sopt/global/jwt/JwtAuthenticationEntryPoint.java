@@ -1,11 +1,14 @@
 package org.sopt.global.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.sopt.global.exception.ErrorCode;
 import org.sopt.global.response.BaseErrorResponse;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 
@@ -19,25 +22,34 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
         response.setHeader("Access-Control-Allow-Methods", "*");
         response.setHeader("Access-Control-Allow-Headers", "*");
 
-        // 요청 속성에서 예외 유형 확인
         Object exceptionType = request.getAttribute("exception");
 
         ErrorCode error;
         if ("TOKEN_EXPIRED".equals(exceptionType)) {
-            error = ErrorCode.TOKEN_EXPIRED;  // 403 Forbidden 반환 (토큰 만료)
+            error = ErrorCode.TOKEN_EXPIRED;
         }else if ("INVALID_TOKEN".equals(exceptionType)) {
-            error = ErrorCode.INVALID_TOKEN; // 403 Forbidden 반환 (저장된 토큰과 다름)
+            error = ErrorCode.INVALID_TOKEN;
         }else if("INVALID_SIGNATURE".equals(exceptionType)) {
             error = ErrorCode.INVALID_SIGNATURE;
         } else {
-            error = ErrorCode.UNAUTHORIZED;  // 401 Unauthorized 반환 (기본값)
+            error = ErrorCode.UNAUTHORIZED;
         }
 
-        response.setStatus(error.getHttpStatus());
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
+        setErrorResponse(response, error);
+    }
 
-        String json = new ObjectMapper().writeValueAsString(new BaseErrorResponse(error.getHttpStatus(), error.getMessage()));
-        response.getWriter().write(json);
+    private void setErrorResponse(HttpServletResponse response, ErrorCode error) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+        response.setCharacterEncoding("UTF-8");
+        response.setStatus(error.getHttpStatus());
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        BaseErrorResponse errorResponse = new BaseErrorResponse(error);
+        try {
+            response.getWriter().write(objectMapper.writeValueAsString(errorResponse));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

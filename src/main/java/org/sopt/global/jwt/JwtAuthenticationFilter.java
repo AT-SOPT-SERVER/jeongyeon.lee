@@ -29,8 +29,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             } catch (CustomException e) {
                 log.debug("토큰 검증 실패: {}", e.getMessage());
                 request.setAttribute("exception", e.getErrorCode().name());
-                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, e.getMessage());
-                return;
+                throw e;
             }
         }
 

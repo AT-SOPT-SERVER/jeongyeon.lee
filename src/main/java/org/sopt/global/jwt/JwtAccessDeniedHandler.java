@@ -16,12 +16,12 @@ public class JwtAccessDeniedHandler implements AccessDeniedHandler {
     public void handle(HttpServletRequest request, HttpServletResponse response,
                        AccessDeniedException accessDeniedException) throws IOException, ServletException {
 
-        ErrorCode error = ErrorCode.UNAUTHORIZED;
+        ErrorCode error = ErrorCode.FORBIDDEN;
         response.setStatus(error.getHttpStatus());
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
 
-        String json = new ObjectMapper().writeValueAsString(new BaseErrorResponse(error.getHttpStatus(), error.getMessage()));
+        String json = new ObjectMapper().writeValueAsString(new BaseErrorResponse(error));
         response.getWriter().write(json);
     }
 }
