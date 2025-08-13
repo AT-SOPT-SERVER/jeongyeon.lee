@@ -27,6 +27,13 @@
             <offheap unit="MB">1</offheap>
         </resources>
     </cache-template>
+    <cache alias="getAllPosts" uses-template="default">
+        <key-type>java.lang.Integer</key-type>
+        <value-type>org.sopt.domain.post.model.Post</value-type>
+        <expiry>
+            <ttl unit="minutes">10</ttl>
+        </expiry>
+    </cache>
 
 
 </config>
