@@ -3,6 +3,7 @@ package org.sopt.global.ehcache;
 import org.springframework.cache.jcache.JCacheCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.core.io.ClassPathResource;
 
 import javax.cache.CacheManager;
@@ -14,6 +15,7 @@ import java.io.IOException;
 public class EhcacheConfig {
 
     @Bean(name = "ehCacheManager")
+    @Primary
     public org.springframework.cache.CacheManager cacheManager() throws IOException {
         CachingProvider cachingProvider = Caching.getCachingProvider("org.ehcache.jsr107.EhcacheCachingProvider");
         CacheManager manager = cachingProvider.getCacheManager(

@@ -29,7 +29,7 @@
     </cache-template>
     <cache alias="getAllPosts" uses-template="default">
         <key-type>java.lang.Integer</key-type>
-        <value-type>org.sopt.domain.post.model.Post</value-type>
+        <value-type>org.sopt.domain.post.dto.response.PagePostResponse</value-type>
         <expiry>
             <ttl unit="minutes">10</ttl>
         </expiry>
