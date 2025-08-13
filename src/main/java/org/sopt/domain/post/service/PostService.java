@@ -74,7 +74,7 @@ public class PostService {
         }
     }
 
-    @Cacheable(value = "post", key = "#page")
+    @Cacheable(cacheNames = "getAllPosts")
     public PagePostResponse getAllPost(int page) {
         PageRequest pageRequest = PageRequest.of(page, PAGE_SIZE);
         Page<Post> posts = postRepository.findAllByOrderByCreatedAtDesc(pageRequest);
